@@ -1314,7 +1314,7 @@ async function loadBooks() {
   showStudentState("loading");
   if (isAdmin) showAdminState("loading");
   try {
-    const res = await fetch(`${API_URL}?action=getBooks`, { mode: "cors" });
+    const res = await fetch(`${API_URL}?action=getBooks`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
@@ -1326,9 +1326,10 @@ async function loadBooks() {
       updateAdminStats(allBooks);
     }
   } catch (err) {
+    console.error("Load error:", err);
     showStudentState("error");
     document.getElementById("errorMsg").textContent =
-      "تعذّر الاتصال بالخادم. تأكد من ربط رابط API في app.js";
+      `تعذّر الاتصال: ${err.message}. تأكد من API_URL والنشر بصلاحية "الجميع"`;
   }
 }
 
@@ -1755,9 +1756,10 @@ function applyFilter(books, q, st) {
 
 async function apiPost(body) {
   const res = await fetch(API_URL, {
-    method: "POST", mode: "cors",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(body)
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body),
+    redirect: "follow"
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
