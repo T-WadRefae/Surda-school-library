@@ -1,10 +1,10 @@
 // ════════════════════════════════════════════════════
 // مكتبة مدرسة سردا الأساسية المختلطة
 // المعلمة: T. Wad Refae
-// app.js — متوافق مع الجرد الرسمي
+// app.js — مع نبذات ذكية وأغلفة ملونة
 // ════════════════════════════════════════════════════
 
-const API_URL    = "https://script.google.com/macros/s/AKfycbzk30YiixkwF6eFAapuP8j9L8uPJsPp-klhp-YDJYU5NB8M3w_jO4INRQbiK-p5uNPf/exec";
+const API_URL    = "https://script.google.com/macros/s/AKfycbxkzEG-tYM5TpaZ7Uox6W8SBVReFZmNllv5_KWd9a4UlLO2un3uac1_pxdp5EnQcInM/exec";
 const ADMIN_PASS = "Surda123surda";
 
 let allBooks         = [];
@@ -12,6 +12,40 @@ let isAdmin          = false;
 let pendingDeleteRow = null;
 let editingRow       = null;
 let parsedFileBooks  = [];
+
+// ─── تحديد لون الغلاف وأيقونته بناءً على الموضوع ───
+function getCoverInfo(book) {
+  const t = String(book["اسم الكتاب"] || "").toLowerCase();
+
+  if (/(قرآن|قران|الكريم|تفسير|حديث|أحاديث|إسلام|إسلامي|فقه|عقيدة|سيرة|نبوي|دعاء|أذكار|صلاة|أنبياء|الرسول|محمد ﷺ)/.test(t))
+    return { class: "religious", icon: "🕌" };
+
+  if (/(فلسطين|القدس|الأقصى|قضية|نكبة|اللاجئين|أسرى|الإنتفاضة)/.test(t))
+    return { class: "palestine", icon: "🇵🇸" };
+
+  if (/(تاريخ|تاريخي|حضارة|عصر|دولة|الخلافة|الفتح|معركة|الحرب|الثورة)/.test(t))
+    return { class: "history", icon: "🏛️" };
+
+  if (/(علم|علوم|علمي|فيزياء|كيمياء|رياضيات|أحياء|بيولوجيا|طب|هندسة|تكنولوجيا|كمبيوتر|حاسوب|فلك|فضاء)/.test(t))
+    return { class: "science", icon: "🔬" };
+
+  if (/(موسوعة|قاموس|معجم)/.test(t))
+    return { class: "encycl", icon: "📚" };
+
+  if (/(ديوان|شعر|شاعر|قصيدة|أدب|أدبي|نثر|مسرح)/.test(t))
+    return { class: "literature", icon: "✒️" };
+
+  if (/(رواية|قصة|قصص|حكاية|حكايات|أسطورة|خيال|مغامرات)/.test(t))
+    return { class: "stories", icon: "📖" };
+
+  if (/(بيئة|طبيعة|حيوان|نبات|بحر|محيط|غابة|طيور)/.test(t))
+    return { class: "nature", icon: "🌿" };
+
+  if (/(عربي|العربية|نحو|صرف|بلاغة|قواعد|إعراب|لغة|english|excel|word|access)/.test(t))
+    return { class: "language", icon: "🔤" };
+
+  return { class: "general", icon: "📕" };
+}
 
 // ─── التنقل ───
 function showLogin() {
@@ -32,6 +66,7 @@ function doLogin() {
     document.getElementById("adminView").classList.remove("hidden");
     renderAdminBooks(allBooks);
     updateAdminStats(allBooks);
+    document.getElementById("totalBooksHint").textContent = allBooks.length;
     toast("✅ مرحباً، المعلمة Wad Refae");
   } else {
     document.getElementById("loginErr").classList.remove("hidden");
@@ -62,7 +97,7 @@ async function loadBooks() {
   showStudentState("loading");
   if (isAdmin) showAdminState("loading");
   try {
-    const res = await fetch(`${API_URL}?action=getBooks`, { mode: "cors" });
+    const res = await fetch(`${API_URL}?action=getBooks`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (data.error) throw new Error(data.error);
@@ -72,11 +107,13 @@ async function loadBooks() {
     if (isAdmin) {
       renderAdminBooks(allBooks);
       updateAdminStats(allBooks);
+      document.getElementById("totalBooksHint").textContent = allBooks.length;
     }
   } catch (err) {
+    console.error("Load error:", err);
     showStudentState("error");
     document.getElementById("errorMsg").textContent =
-      "تعذّر الاتصال بالخادم. تأكد من ربط رابط API في app.js";
+      `تعذّر الاتصال: ${err.message}. تأكد من API_URL والنشر بصلاحية "الجميع"`;
   }
 }
 
@@ -87,31 +124,32 @@ function renderStudentBooks(books) {
   const grid = document.getElementById("booksGrid");
   if (!books.length) { showStudentState("noResults"); return; }
   showStudentState("grid");
-  grid.innerHTML = books.map(b => studentCard(b)).join("");
+  // الترقيم بترتيب الإضافة (بطء بسيط لكل بطاقة)
+  grid.innerHTML = books.map((b, i) => studentCard(b, i)).join("");
 }
 
-function studentCard(book) {
+function studentCard(book, idx) {
+  const cover = getCoverInfo(book);
   const borrowed = book["الحالة"] === "مُعار";
   const part = book["الجزء"] && book["الجزء"] !== ""
     ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  const delay = Math.min(idx * 0.02, 0.6);
   return `
-    <div class="book-card clickable ${borrowed ? "borrowed" : ""}" onclick="openBookDetail(${book._row})">
-      <div class="book-head">
-        <div class="book-emoji">📖</div>
-        <div class="book-titlebox">
-          <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
-          <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
-        </div>
-      </div>
-      <div class="book-tags">
-        ${book["رقم التصنيف المكتبي"] ? `<span class="tag">رقم: ${esc(book["رقم التصنيف المكتبي"])}</span>` : ""}
-        <span class="tag ${borrowed ? "borrowed" : "available"}">
-          ${borrowed ? "🔴 مُعار" : "✅ متوفر"}
+    <div class="book-card clickable" style="animation-delay:${delay}s" onclick="openBookDetail(${book._row})">
+      <div class="book-cover ${cover.class}">
+        <span class="book-cover-icon">${cover.icon}</span>
+        <span class="book-cover-num">#${esc(book["الرقم المتسلسل"] || "")}</span>
+        <span class="book-cover-status ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "مُعار" : "متوفر"}
         </span>
       </div>
-      <div class="book-meta-row">
-        <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
-        <span>🔢 #${esc(book["الرقم المتسلسل"] || "")}</span>
+      <div class="book-body">
+        <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+        <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        <div class="book-meta-row">
+          <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+          ${book["رقم التصنيف المكتبي"] ? `<span>🏷️ ${esc(book["رقم التصنيف المكتبي"])}</span>` : '<span></span>'}
+        </div>
       </div>
     </div>
   `;
@@ -139,17 +177,26 @@ function showStudentState(state) {
 function openBookDetail(row) {
   const b = allBooks.find(x => x._row === row);
   if (!b) return;
+  const cover = getCoverInfo(b);
   const borrowed = b["الحالة"] === "مُعار";
+  const summary = b["النبذة"] || "لم يتم توليد نبذة لهذا الكتاب بعد";
+
   document.getElementById("bookModalBody").innerHTML = `
-    <div class="detail-icon">📖</div>
+    <div class="detail-cover ${cover.class}">
+      <span class="detail-cover-icon">${cover.icon}</span>
+    </div>
     <div class="detail-title">${esc(b["اسم الكتاب"])}</div>
     <div class="detail-author">✍️ ${esc(b["المؤلف"] || "غير محدد")}</div>
     <div class="detail-tags">
-      ${b["الجزء"] ? `<span class="tag">جزء ${esc(b["الجزء"])}</span>` : ""}
-      <span class="tag ${borrowed ? "borrowed" : "available"}">
-        ${borrowed ? "🔴 مُعار حالياً" : "✅ متوفر"}
+      ${b["الجزء"] ? `<span class="detail-tag">جزء ${esc(b["الجزء"])}</span>` : ""}
+      <span class="detail-tag ${borrowed ? "borrowed" : "available"}">
+        ${borrowed ? "🔴 مُعار حالياً" : "✅ متوفر للاستعارة"}
       </span>
     </div>
+
+    <div class="detail-summary-label">📝 نبذة عن الكتاب</div>
+    <div class="detail-summary">${esc(summary)}</div>
+
     <div class="detail-row"><span>الرقم المتسلسل</span><span>${esc(b["الرقم المتسلسل"] || "")}</span></div>
     ${b["رقم التصنيف المكتبي"] ? `<div class="detail-row"><span>رقم التصنيف المكتبي</span><span>${esc(b["رقم التصنيف المكتبي"])}</span></div>` : ""}
     <div class="detail-row"><span>رقم صفحة السجل</span><span>${esc(b["رقم صفحة السجل"] || "—")}</span></div>
@@ -168,33 +215,33 @@ function renderAdminBooks(books) {
   const grid = document.getElementById("adminBooksGrid");
   if (!books.length) { showAdminState("noResults"); return; }
   showAdminState("grid");
-  grid.innerHTML = books.map(b => adminCard(b)).join("");
+  grid.innerHTML = books.map((b, i) => adminCard(b, i)).join("");
 }
 
-function adminCard(book) {
+function adminCard(book, idx) {
+  const cover = getCoverInfo(book);
   const borrowed = book["الحالة"] === "مُعار";
   const part = book["الجزء"] && book["الجزء"] !== ""
     ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  const delay = Math.min(idx * 0.02, 0.6);
   return `
-    <div class="book-card ${borrowed ? "borrowed" : ""}">
-      <div class="book-head">
-        <div class="book-emoji">📖</div>
-        <div class="book-titlebox">
-          <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
-          <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
-        </div>
-      </div>
-      <div class="book-tags">
-        ${book["رقم التصنيف المكتبي"] ? `<span class="tag">رقم: ${esc(book["رقم التصنيف المكتبي"])}</span>` : ""}
-        <span class="tag ${borrowed ? "borrowed" : "available"}">
-          ${borrowed ? "🔴 مُعار" : "✅ متوفر"}
+    <div class="book-card" style="animation-delay:${delay}s">
+      <div class="book-cover ${cover.class}">
+        <span class="book-cover-icon">${cover.icon}</span>
+        <span class="book-cover-num">#${esc(book["الرقم المتسلسل"] || "")}</span>
+        <span class="book-cover-status ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "مُعار" : "متوفر"}
         </span>
       </div>
-      <div class="book-meta-row">
-        <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
-        <span>🔢 #${esc(book["الرقم المتسلسل"] || "")}</span>
+      <div class="book-body">
+        <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+        <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        <div class="book-meta-row">
+          <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+          ${book["رقم التصنيف المكتبي"] ? `<span>🏷️ ${esc(book["رقم التصنيف المكتبي"])}</span>` : '<span></span>'}
+        </div>
+        ${borrowed ? `<div class="book-borrower">👤 المستعير: <strong>${esc(book["المستعير"] || "")}</strong> — ${esc(book["تاريخ الإعارة"] || "")}</div>` : ""}
       </div>
-      ${borrowed ? `<div class="book-borrower">👤 المستعير: <strong>${esc(book["المستعير"] || "")}</strong> — ${esc(book["تاريخ الإعارة"] || "")}</div>` : ""}
       <div class="book-actions">
         ${borrowed
           ? `<button class="btn btn-success btn-flex" onclick="doReturn(${book._row})">↩️ إرجاع</button>`
@@ -240,12 +287,31 @@ async function addBook() {
   try {
     const res = await apiPost({ action: "addBook", password: ADMIN_PASS, book });
     if (res.error) throw new Error(res.error);
-    showMsg("addMsg", "✅ " + res.message, "success");
+    showMsg("addMsg", "✅ " + res.message + " (مع نبذة تلقائية)", "success");
     ["bookTitle","bookAuthor","bookPart","bookClass","bookPage","bookNotes"]
       .forEach(id => document.getElementById(id).value = "");
     await loadBooks();
   } catch (e) {
     showMsg("addMsg", "❌ " + e.message, "error");
+  }
+}
+
+// ─── توليد نبذات ───
+async function generateAllSummaries() {
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0;display:inline-block;vertical-align:middle"></div> جارٍ التوليد...';
+  showMsg("genMsg", "⏳ جارٍ توليد النبذات... قد يستغرق دقيقة إلى دقيقتين", "success");
+  try {
+    const res = await apiPost({ action: "generateSummaries", password: ADMIN_PASS });
+    if (res.error) throw new Error(res.error);
+    showMsg("genMsg", "✅ " + res.message, "success");
+    await loadBooks();
+  } catch (e) {
+    showMsg("genMsg", "❌ " + e.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🤖 ابدأ توليد النبذات للكتب الفارغة';
   }
 }
 
@@ -265,18 +331,12 @@ function handleFile(event) {
       const data = new Uint8Array(e.target.result);
       const wb = XLSX.read(data, { type: "array" });
 
-      // البحث عن أفضل ورقة
-      let sheet = null;
       let rows = [];
       for (const name of wb.SheetNames) {
         const ws = wb.Sheets[name];
-        // محاولة قراءة برأس الصف 0، ثم 5، ثم 6 (لملف الجرد الرسمي)
         for (const headerRow of [0, 5, 6]) {
-          const tmp = XLSX.utils.sheet_to_json(ws, {
-            defval: "", range: headerRow
-          });
+          const tmp = XLSX.utils.sheet_to_json(ws, { defval: "", range: headerRow });
           if (tmp.length > 0 && tmp.some(r => r["اسم الكتاب"] || r["اسم الكتاب "] || r["title"] || r["Title"])) {
-            sheet = name;
             rows = tmp;
             break;
           }
@@ -310,9 +370,7 @@ function handleFile(event) {
       const preview = parsedFileBooks.slice(0, 5);
       document.getElementById("filePreview").innerHTML = `
         <table class="preview-table">
-          <thead>
-            <tr><th>#</th><th>اسم الكتاب</th><th>المؤلف</th><th>الجزء</th><th>سجل</th></tr>
-          </thead>
+          <thead><tr><th>#</th><th>اسم الكتاب</th><th>المؤلف</th><th>الجزء</th><th>سجل</th></tr></thead>
           <tbody>
             ${preview.map((b, i) => `
               <tr>
@@ -343,7 +401,6 @@ async function importFromFile() {
   if (!parsedFileBooks.length) return;
   showMsg("importMsg", `⏳ جارٍ استيراد ${parsedFileBooks.length} كتاب...`, "success");
   try {
-    // الاستيراد على دفعات (100 في كل مرة) لتجنّب timeout
     const BATCH = 100;
     let totalImported = 0;
     for (let i = 0; i < parsedFileBooks.length; i += BATCH) {
@@ -353,7 +410,7 @@ async function importFromFile() {
       totalImported += batch.length;
       showMsg("importMsg", `⏳ تم استيراد ${totalImported} من ${parsedFileBooks.length}...`, "success");
     }
-    showMsg("importMsg", `✅ تم استيراد ${totalImported} كتاب للجرد`, "success");
+    showMsg("importMsg", `✅ تم استيراد ${totalImported} كتاب للجرد مع نبذات تلقائية`, "success");
     document.getElementById("fileInput").value = "";
     document.getElementById("fileInfo").classList.add("hidden");
     document.getElementById("filePreview").innerHTML = "";
@@ -435,6 +492,10 @@ function openEdit(row) {
         <input id="editPage" type="text" value="${esc(b["رقم صفحة السجل"] || "")}">
       </div>
       <div class="form-group full">
+        <label>النبذة (اتركها فارغة للتوليد التلقائي)</label>
+        <textarea id="editSummary" rows="3">${esc(b["النبذة"] || "")}</textarea>
+      </div>
+      <div class="form-group full">
         <label>ملاحظات</label>
         <textarea id="editNotes">${esc(b["ملاحظات"] || "")}</textarea>
       </div>
@@ -451,6 +512,7 @@ async function saveEdit() {
     "الجزء":              document.getElementById("editPart").value.trim(),
     "رقم التصنيف المكتبي": document.getElementById("editClass").value.trim(),
     "رقم صفحة السجل":     document.getElementById("editPage").value.trim(),
+    "النبذة":             document.getElementById("editSummary").value.trim(),
     "ملاحظات":            document.getElementById("editNotes").value.trim()
   };
   if (!book["اسم الكتاب"]) { toast("❌ اسم الكتاب مطلوب", "error"); return; }
@@ -503,9 +565,10 @@ function applyFilter(books, q, st) {
 
 async function apiPost(body) {
   const res = await fetch(API_URL, {
-    method: "POST", mode: "cors",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(body)
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body),
+    redirect: "follow"
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
