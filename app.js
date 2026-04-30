@@ -4,7 +4,7 @@
 // app.js — متوافق مع الجرد الرسمي
 // ════════════════════════════════════════════════════
 
-const API_URL    = "https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec";
+const API_URL    = "https://script.google.com/macros/s/AKfycbzk30YiixkwF6eFAapuP8j9L8uPJsPp-klhp-YDJYU5NB8M3w_jO4INRQbiK-p5uNPf/exec";
 const ADMIN_PASS = "Surda123surda";
 
 let allBooks         = [];
