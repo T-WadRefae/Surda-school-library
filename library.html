@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة مدرسة سردا الأساسية المختلطة</title>
+<style>
+/* ══════════════════════════════════════════
+   مكتبة مدرسة سردا | T. Wad Refae
+   تصميم نظيف ومنظم
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --primary:      #0d4d70;
+  --primary-dark: #073854;
+  --primary-light:#e8f1f7;
+  --accent:       #d4a017;
+  --accent-light: #fef3c7;
+  --green:        #16794d;
+  --green-light:  #d1fae5;
+  --red:          #b91c1c;
+  --red-light:    #fee2e2;
+  --bg:           #f5f7fa;
+  --card:         #ffffff;
+  --text:         #1f2937;
+  --text-soft:    #6b7280;
+  --text-muted:   #9ca3af;
+  --border:       #e5e7eb;
+  --border-strong:#d1d5db;
+  --radius:       10px;
+  --radius-lg:    14px;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.06);
+  --shadow:       0 2px 8px rgba(0,0,0,0.08);
+  --shadow-lg:    0 8px 24px rgba(0,0,0,0.12);
+  --font:         'Tajawal', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+button { font-family: var(--font); cursor: pointer; }
+input, select, textarea { font-family: var(--font); }
+
+.hidden { display: none !important; }
+
+/* ══════════════════════════════════════════
+   شريط علوي موحد (للطالب والمسؤول)
+══════════════════════════════════════════ */
+.topbar {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: #fff;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.topbar-icon {
+  font-size: 1.8rem;
+  background: rgba(255,255,255,0.15);
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-titles h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin-bottom: 2px;
+}
+
+.topbar-titles p {
+  font-size: 0.78rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.topbar-teacher {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  opacity: 0.9;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  border-right: 3px solid var(--accent);
+}
+.topbar-teacher strong {
+  font-size: 0.92rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.topbar-action {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.topbar-action:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+.topbar-action.danger {
+  background: rgba(220,38,38,0.6);
+  border-color: rgba(255,255,255,0.2);
+}
+.topbar-action.danger:hover { background: rgba(220,38,38,0.85); }
+
+/* ══════════════════════════════════════════
+   حاوية الصفحة
+══════════════════════════════════════════ */
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* ══════════════════════════════════════════
+   إحصائيات
+══════════════════════════════════════════ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-icon.total     { background: var(--primary-light); color: var(--primary); }
+.stat-icon.available { background: var(--green-light);   color: var(--green); }
+.stat-icon.borrowed  { background: var(--red-light);     color: var(--red); }
+
+.stat-num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+/* ══════════════════════════════════════════
+   شريط البحث
+══════════════════════════════════════════ */
+.toolbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+.search-input span {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.search-input input {
+  width: 100%;
+  padding: 10px 38px 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  background: #fafbfc;
+  transition: all 0.15s;
+}
+.search-input input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.1);
+}
+
+.toolbar select {
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  background: #fafbfc;
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  min-width: 160px;
+  transition: all 0.15s;
+}
+.toolbar select:focus { border-color: var(--primary); background: #fff; }
+
+/* ══════════════════════════════════════════
+   شبكة الكتب
+══════════════════════════════════════════ */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.book-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+}
+.book-card.borrowed::before { background: var(--red); }
+
+.book-card.clickable { cursor: pointer; }
+.book-card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.book-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.book-emoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+  background: var(--primary-light);
+  width: 50px; height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-titlebox {
+  flex: 1;
+  min-width: 0;
+}
+
+.book-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  margin-bottom: 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-author {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+}
+
+.book-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.tag.available { background: var(--green-light); color: var(--green); }
+.tag.borrowed  { background: var(--red-light);   color: var(--red); }
+
+.book-summary {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.book-borrower {
+  background: var(--accent-light);
+  border-right: 3px solid var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #92400e;
+}
+.book-borrower strong { color: #78350f; }
+
+.book-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+/* ══════════════════════════════════════════
+   أزرار
+══════════════════════════════════════════ */
+.btn {
+  border: none;
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+.btn-success {
+  background: var(--green);
+  color: #fff;
+}
+.btn-success:hover { background: #115e3b; transform: translateY(-1px); }
+
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+}
+.btn-danger:hover { background: #991b1b; transform: translateY(-1px); }
+
+.btn-ghost {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--border); }
+
+.btn-icon {
+  background: var(--bg);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+}
+.btn-icon:hover { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+
+.btn-block {
+  width: 100%;
+  padding: 11px;
+  font-size: 0.95rem;
+}
+
+.btn-flex { flex: 1; }
+
+/* ══════════════════════════════════════════
+   حالات (تحميل/خطأ/فارغ)
+══════════════════════════════════════════ */
+.state {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 60px 20px;
+  text-align: center;
+}
+.state-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
+.state-text { color: var(--text-soft); margin-bottom: 16px; }
+
+.spinner {
+  width: 38px; height: 38px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 14px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════════
+   شاشة تسجيل الدخول
+══════════════════════════════════════════ */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 32px 32px;
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+  position: relative;
+  animation: popIn 0.25s ease;
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.login-back {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.login-back:hover { color: var(--primary); }
+
+.login-icon {
+  font-size: 2.5rem;
+  background: var(--primary-light);
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.login-card h2 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.login-card .subtitle {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+  margin-bottom: 22px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  margin-bottom: 12px;
+  transition: all 0.15s;
+}
+.login-card input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.1);
+}
+
+.login-error {
+  margin-top: 12px;
+  background: var(--red-light);
+  color: var(--red);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+/* ══════════════════════════════════════════
+   لوحة المسؤول — تخطيط مع تبويبات
+══════════════════════════════════════════ */
+.admin-tabs {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.admin-tab {
+  background: none;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 7px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.admin-tab:hover { background: var(--bg); color: var(--text); }
+.admin-tab.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(13,77,112,0.3);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ══════════════════════════════════════════
+   البطاقات (نماذج / محتوى)
+══════════════════════════════════════════ */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel h2 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.panel .panel-desc {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
+
+.panel-section {
+  padding: 18px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.panel-section:last-child { margin-bottom: 0; }
+
+.panel-section h3 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* نماذج */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  font-size: 0.92rem;
+  background: #fff;
+  outline: none;
+  transition: all 0.15s;
+  color: var(--text);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.08);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: var(--font);
+}
+
+.hint {
+  background: var(--accent-light);
+  border-right: 3px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #78350f;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+.hint code {
+  background: rgba(0,0,0,0.07);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+/* رفع ملف */
+.file-drop {
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--bg);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.file-drop:hover, .file-drop.drag {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.file-drop-icon { font-size: 2.2rem; margin-bottom: 8px; }
+.file-drop-text { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.file-drop-sub  { font-size: 0.83rem; color: var(--text-soft); }
+.file-drop input[type="file"] { display: none; }
+
+.file-info {
+  margin-top: 14px;
+  background: var(--green-light);
+  border-right: 3px solid var(--green);
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  color: #064e3b;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.preview-table th {
+  background: var(--primary);
+  color: #fff;
+  padding: 9px 12px;
+  text-align: right;
+  font-weight: 700;
+}
+.preview-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.preview-table tr:last-child td { border-bottom: none; }
+.preview-table tr:hover td { background: var(--bg); }
+
+.msg {
+  padding: 11px 14px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 14px;
+}
+.msg.success { background: var(--green-light); color: #064e3b; }
+.msg.error   { background: var(--red-light);   color: #991b1b; }
+
+/* ══════════════════════════════════════════
+   Modals
+══════════════════════════════════════════ */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.18s ease;
+}
+
+.modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  max-width: 520px;
+  width: 100%;
+  position: relative;
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: popIn 0.22s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.modal.small { max-width: 380px; text-align: center; }
+
+.modal-close {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: var(--bg);
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); }
+
+.modal h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  justify-content: center;
+}
+
+/* تفاصيل كتاب في modal */
+.detail-icon {
+  font-size: 3rem;
+  background: var(--primary-light);
+  width: 80px; height: 80px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+.detail-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 4px;
+}
+.detail-author {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+}
+.detail-tags {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.detail-summary {
+  background: var(--bg);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border-right: 3px solid var(--primary);
+  line-height: 1.7;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 14px;
+  background: var(--bg);
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.detail-row span:first-child { color: var(--text-soft); }
+.detail-row span:last-child { font-weight: 700; }
+
+/* ══════════════════════════════════════════
+   Toast
+══════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-dark);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 9px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 999;
+  animation: toastIn 0.25s ease;
+  white-space: nowrap;
+  max-width: 90vw;
+}
+.toast.success { background: var(--green); }
+.toast.error   { background: var(--red); }
+@keyframes toastIn {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ══════════════════════════════════════════
+   Footer
+══════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 18px;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  margin-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.footer strong { color: var(--primary); }
+
+/* ══════════════════════════════════════════
+   Responsive
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .topbar { padding: 12px 16px; }
+  .topbar-titles h1 { font-size: 1rem; }
+  .topbar-titles p  { font-size: 0.72rem; }
+  .topbar-teacher { display: none; }
+  .page { padding: 16px; }
+  .stats { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar select { width: 100%; }
+  .form-row { grid-template-columns: 1fr; }
+  .books-grid { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════
+   إضافات للجرد الرسمي
+═══════════════════════════ */
+
+.part-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: #92400e;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.book-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  margin-top: auto;
+}
+.book-meta-row span { display: inline-flex; align-items: center; gap: 3px; }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ═════════════════ واجهة الطالب ═════════════════ -->
+<div id="studentView">
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-icon">📚</div>
+      <div class="topbar-titles">
+        <h1>مكتبة مدرسة سردا</h1>
+        <p>الأساسية المختلطة</p>
+      </div>
+    </div>
+    <div class="topbar-teacher">
+      <span>المعلمة</span>
+      <strong>T. Wad Refae</strong>
+    </div>
+    <button class="topbar-action" onclick="showLogin()">
+      <span>🔑</span><span>دخول المعلم</span>
+    </button>
+  </header>
+
+  <div class="page">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon total">📚</div>
+        <div>
+          <div class="stat-num" id="statTotal">0</div>
+          <div class="stat-label">إجمالي الكتب</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon available">✅</div>
+        <div>
+          <div class="stat-num" id="statAvailable">0</div>
+          <div class="stat-label">متوفر للقراءة</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon borrowed">📤</div>
+        <div>
+          <div class="stat-num" id="statBorrowed">0</div>
+          <div class="stat-label">مُعار حالياً</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-input">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث باسم الكتاب أو المؤلف أو رقم التصنيف..." oninput="filterBooks()">
+      </div>
+      <select id="statusFilter" onchange="filterBooks()">
+        <option value="">📊 كل الحالات</option>
+        <option value="متوفر">✅ متوفر</option>
+        <option value="مُعار">🔴 مُعار</option>
+      </select>
+    </div>
+
+    <div id="loadingState" class="state">
+      <div class="spinner"></div>
+      <div class="state-text">جارٍ تحميل الجرد...</div>
+    </div>
+    <div id="errorState" class="state hidden">
+      <span class="state-icon">⚠️</span>
+      <div class="state-text" id="errorMsg">تعذّر الاتصال بالخادم</div>
+      <button class="btn btn-primary" onclick="loadBooks()">🔄 إعادة المحاولة</button>
+    </div>
+    <div id="booksGrid" class="books-grid hidden"></div>
+    <div id="noResults" class="state hidden">
+      <span class="state-icon">📭</span>
+      <div class="state-text">لا توجد كتب تطابق بحثك</div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>مكتبة مدرسة سردا الأساسية المختلطة &nbsp;•&nbsp; المعلمة <strong>T. Wad Refae</strong></p>
+  </footer>
+
+</div>
+
+
+<!-- ═════════════════ شاشة دخول المعلم ═════════════════ -->
+<div id="loginScreen" class="login-overlay hidden">
+  <div class="login-card">
+    <button class="login-back" onclick="hideLogin()">← رجوع للمكتبة</button>
+    <div class="login-icon">🔐</div>
+    <h2>لوحة إدارة المعلم</h2>
+    <p class="subtitle">أدخل كلمة المرور للمتابعة</p>
+    <input type="password" id="adminPwd" placeholder="كلمة المرور..."
+           onkeyup="if(event.key==='Enter') doLogin()">
+    <button class="btn btn-primary btn-block" onclick="doLogin()">دخول</button>
+    <div id="loginErr" class="login-error hidden">❌ كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════ واجهة المعلم ═════════════════ -->
+<div id="adminView" class="hidden">
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-icon">🛠️</div>
+      <div class="topbar-titles">
+        <h1>لوحة إدارة المكتبة</h1>
+        <p>مدرسة سردا الأساسية المختلطة</p>
+      </div>
+    </div>
+    <div class="topbar-teacher">
+      <span>المعلمة</span>
+      <strong>T. Wad Refae</strong>
+    </div>
+    <button class="topbar-action" onclick="switchToStudent()">
+      <span>👁️</span><span>واجهة الطالب</span>
+    </button>
+    <button class="topbar-action danger" onclick="logout()">
+      <span>🚪</span><span>خروج</span>
+    </button>
+  </header>
+
+  <div class="page">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon total">📚</div>
+        <div>
+          <div class="stat-num" id="aStatTotal">0</div>
+          <div class="stat-label">إجمالي الكتب</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon available">✅</div>
+        <div>
+          <div class="stat-num" id="aStatAvailable">0</div>
+          <div class="stat-label">متوفر</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon borrowed">📤</div>
+        <div>
+          <div class="stat-num" id="aStatBorrowed">0</div>
+          <div class="stat-label">مُعار</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="books"  onclick="switchTab('books')">📖 جميع الكتب</button>
+      <button class="admin-tab"        data-tab="add"    onclick="switchTab('add')">➕ إضافة كتاب</button>
+      <button class="admin-tab"        data-tab="import" onclick="switchTab('import')">📥 استيراد ملف</button>
+    </div>
+
+    <!-- ── جميع الكتب ── -->
+    <div id="tab-books" class="tab-panel active">
+      <div class="toolbar">
+        <div class="search-input">
+          <span>🔍</span>
+          <input type="text" id="adminSearch" placeholder="ابحث في الكتب..." oninput="adminFilterBooks()">
+        </div>
+        <select id="adminStatusFilter" onchange="adminFilterBooks()">
+          <option value="">📊 كل الحالات</option>
+          <option value="متوفر">✅ متوفر</option>
+          <option value="مُعار">🔴 مُعار</option>
+        </select>
+      </div>
+
+      <div id="adminLoading" class="state">
+        <div class="spinner"></div>
+        <div class="state-text">جارٍ التحميل...</div>
+      </div>
+      <div id="adminBooksGrid" class="books-grid hidden"></div>
+      <div id="adminNoResults" class="state hidden">
+        <span class="state-icon">📭</span>
+        <div class="state-text">لا توجد كتب</div>
+      </div>
+    </div>
+
+    <!-- ── إضافة كتاب ── -->
+    <div id="tab-add" class="tab-panel">
+      <div class="panel">
+        <h2>➕ إضافة كتاب جديد للجرد</h2>
+        <p class="panel-desc">سيُضاف الكتاب مباشرة إلى ملف الجرد الرسمي</p>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>اسم الكتاب *</label>
+            <input type="text" id="bookTitle" placeholder="مثال: في رحاب القرآن الكريم">
+          </div>
+          <div class="form-group">
+            <label>المؤلف</label>
+            <input type="text" id="bookAuthor" placeholder="اسم المؤلف">
+          </div>
+          <div class="form-group">
+            <label>الجزء</label>
+            <input type="text" id="bookPart" placeholder="1، الجزء الأول، ...">
+          </div>
+          <div class="form-group">
+            <label>رقم التصنيف المكتبي</label>
+            <input type="text" id="bookClass" placeholder="رقم التصنيف (إن وجد)">
+          </div>
+          <div class="form-group">
+            <label>رقم صفحة السجل</label>
+            <input type="text" id="bookPage" placeholder="رقم الصفحة">
+          </div>
+          <div class="form-group full">
+            <label>ملاحظات (اختياري)</label>
+            <textarea id="bookNotes" placeholder="أي ملاحظات إضافية"></textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="addBook()">➕ إضافة للجرد</button>
+        <div id="addMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
+    <!-- ── استيراد ملف ── -->
+    <div id="tab-import" class="tab-panel">
+      <div class="panel">
+        <h2>📥 استيراد دفعة كتب</h2>
+        <p class="panel-desc">استورد الكتب من ملف Excel أو CSV — مناسب للجرد الأولي</p>
+
+        <div class="panel-section">
+          <h3>📂 من ملف Excel أو CSV</h3>
+          <div class="hint">
+            يجب أن يحتوي الملف على الأعمدة التالية (الصف الأول رؤوس):<br>
+            <code>اسم الكتاب</code> ، <code>المؤلف</code> ، <code>الجزء</code> ، <code>رقم التصنيف المكتبي</code> ، <code>رقم صفحة السجل</code> ، <code>ملاحظات</code><br>
+            الصيغ المدعومة: <code>.xlsx</code> ، <code>.xls</code> ، <code>.csv</code>
+          </div>
+
+          <label class="file-drop" id="fileDropZone">
+            <div class="file-drop-icon">📁</div>
+            <div class="file-drop-text">اضغط لاختيار ملف أو اسحبه هنا</div>
+            <div class="file-drop-sub">Excel (.xlsx, .xls) أو CSV</div>
+            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)">
+          </label>
+
+          <div id="fileInfo" class="file-info hidden"></div>
+          <div id="filePreview"></div>
+
+          <button id="importFileBtn" class="btn btn-primary btn-block hidden" style="margin-top:14px"
+                  onclick="importFromFile()">📥 استيراد للجرد</button>
+        </div>
+
+        <div id="importMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>لوحة إدارة المكتبة &nbsp;•&nbsp; المعلمة <strong>T. Wad Refae</strong></p>
+  </footer>
+
+</div>
+
+
+<!-- Modals -->
+<div id="bookModal" class="modal-bg hidden" onclick="if(event.target===this) closeBookModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBookModal()">✕</button>
+    <div id="bookModalBody"></div>
+  </div>
+</div>
+
+<div id="adminModal" class="modal-bg hidden" onclick="if(event.target===this) closeAdminModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAdminModal()">✕</button>
+    <div id="adminModalBody"></div>
+  </div>
+</div>
+
+<div id="deleteModal" class="modal-bg hidden">
+  <div class="modal small">
+    <div class="state-icon" style="font-size:2.5rem">🗑️</div>
+    <h3>تأكيد الحذف</h3>
+    <p style="color:var(--text-soft);margin:8px 0 4px">هل أنت متأكد من حذف هذا الكتاب من الجرد؟</p>
+    <p style="color:var(--red);font-size:.85rem">لا يمكن التراجع عن هذا الإجراء</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="confirmDelete()">نعم، احذف</button>
+      <button class="btn btn-ghost"  onclick="closeDeleteModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+// ════════════════════════════════════════════════════
+// مكتبة مدرسة سردا الأساسية المختلطة
+// المعلمة: T. Wad Refae
+// app.js — متوافق مع الجرد الرسمي
+// ════════════════════════════════════════════════════
+
+const API_URL    = "https://script.google.com/macros/s/AKfycbzk30YiixkwF6eFAapuP8j9L8uPJsPp-klhp-YDJYU5NB8M3w_jO4INRQbiK-p5uNPf/exec";
+const ADMIN_PASS = "Surda123surda";
+
+let allBooks         = [];
+let isAdmin          = false;
+let pendingDeleteRow = null;
+let editingRow       = null;
+let parsedFileBooks  = [];
+
+// ─── التنقل ───
+function showLogin() {
+  document.getElementById("loginScreen").classList.remove("hidden");
+  setTimeout(() => document.getElementById("adminPwd")?.focus(), 100);
+}
+function hideLogin() {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("adminPwd").value = "";
+  document.getElementById("loginErr").classList.add("hidden");
+}
+function doLogin() {
+  const pw = document.getElementById("adminPwd").value;
+  if (pw === ADMIN_PASS) {
+    isAdmin = true;
+    hideLogin();
+    document.getElementById("studentView").classList.add("hidden");
+    document.getElementById("adminView").classList.remove("hidden");
+    renderAdminBooks(allBooks);
+    updateAdminStats(allBooks);
+    toast("✅ مرحباً، المعلمة Wad Refae");
+  } else {
+    document.getElementById("loginErr").classList.remove("hidden");
+    document.getElementById("adminPwd").value = "";
+    document.getElementById("adminPwd").focus();
+  }
+}
+function switchToStudent() {
+  document.getElementById("adminView").classList.add("hidden");
+  document.getElementById("studentView").classList.remove("hidden");
+  toast("👁️ واجهة الطالب");
+}
+function logout() {
+  isAdmin = false;
+  document.getElementById("adminView").classList.add("hidden");
+  document.getElementById("studentView").classList.remove("hidden");
+  toast("تم تسجيل الخروج");
+}
+function switchTab(name) {
+  document.querySelectorAll(".admin-tab").forEach(t =>
+    t.classList.toggle("active", t.dataset.tab === name));
+  document.querySelectorAll(".tab-panel").forEach(p =>
+    p.classList.toggle("active", p.id === `tab-${name}`));
+}
+
+// ─── تحميل الكتب ───
+async function loadBooks() {
+  showStudentState("loading");
+  if (isAdmin) showAdminState("loading");
+  try {
+    const res = await fetch(`${API_URL}?action=getBooks`, { mode: "cors" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    allBooks = data.books || [];
+    renderStudentBooks(allBooks);
+    updateStudentStats(allBooks);
+    if (isAdmin) {
+      renderAdminBooks(allBooks);
+      updateAdminStats(allBooks);
+    }
+  } catch (err) {
+    showStudentState("error");
+    document.getElementById("errorMsg").textContent =
+      "تعذّر الاتصال بالخادم. تأكد من ربط رابط API في app.js";
+  }
+}
+
+// ════════════════════════════════════════════════════
+// واجهة الطالب
+// ════════════════════════════════════════════════════
+function renderStudentBooks(books) {
+  const grid = document.getElementById("booksGrid");
+  if (!books.length) { showStudentState("noResults"); return; }
+  showStudentState("grid");
+  grid.innerHTML = books.map(b => studentCard(b)).join("");
+}
+
+function studentCard(book) {
+  const borrowed = book["الحالة"] === "مُعار";
+  const part = book["الجزء"] && book["الجزء"] !== ""
+    ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  return `
+    <div class="book-card clickable ${borrowed ? "borrowed" : ""}" onclick="openBookDetail(${book._row})">
+      <div class="book-head">
+        <div class="book-emoji">📖</div>
+        <div class="book-titlebox">
+          <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+          <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        </div>
+      </div>
+      <div class="book-tags">
+        ${book["رقم التصنيف المكتبي"] ? `<span class="tag">رقم: ${esc(book["رقم التصنيف المكتبي"])}</span>` : ""}
+        <span class="tag ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "🔴 مُعار" : "✅ متوفر"}
+        </span>
+      </div>
+      <div class="book-meta-row">
+        <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+        <span>🔢 #${esc(book["الرقم المتسلسل"] || "")}</span>
+      </div>
+    </div>
+  `;
+}
+
+function filterBooks() {
+  const q  = document.getElementById("searchInput").value.trim().toLowerCase();
+  const st = document.getElementById("statusFilter").value;
+  renderStudentBooks(applyFilter(allBooks, q, st));
+}
+
+function updateStudentStats(books) {
+  document.getElementById("statTotal").textContent     = books.length;
+  document.getElementById("statAvailable").textContent = books.filter(b => b["الحالة"] === "متوفر").length;
+  document.getElementById("statBorrowed").textContent  = books.filter(b => b["الحالة"] === "مُعار").length;
+}
+
+function showStudentState(state) {
+  ["loadingState","errorState","booksGrid","noResults"].forEach(id =>
+    document.getElementById(id).classList.add("hidden"));
+  const map = { loading: "loadingState", error: "errorState", grid: "booksGrid", noResults: "noResults" };
+  document.getElementById(map[state]).classList.remove("hidden");
+}
+
+function openBookDetail(row) {
+  const b = allBooks.find(x => x._row === row);
+  if (!b) return;
+  const borrowed = b["الحالة"] === "مُعار";
+  document.getElementById("bookModalBody").innerHTML = `
+    <div class="detail-icon">📖</div>
+    <div class="detail-title">${esc(b["اسم الكتاب"])}</div>
+    <div class="detail-author">✍️ ${esc(b["المؤلف"] || "غير محدد")}</div>
+    <div class="detail-tags">
+      ${b["الجزء"] ? `<span class="tag">جزء ${esc(b["الجزء"])}</span>` : ""}
+      <span class="tag ${borrowed ? "borrowed" : "available"}">
+        ${borrowed ? "🔴 مُعار حالياً" : "✅ متوفر"}
+      </span>
+    </div>
+    <div class="detail-row"><span>الرقم المتسلسل</span><span>${esc(b["الرقم المتسلسل"] || "")}</span></div>
+    ${b["رقم التصنيف المكتبي"] ? `<div class="detail-row"><span>رقم التصنيف المكتبي</span><span>${esc(b["رقم التصنيف المكتبي"])}</span></div>` : ""}
+    <div class="detail-row"><span>رقم صفحة السجل</span><span>${esc(b["رقم صفحة السجل"] || "—")}</span></div>
+    ${b["ملاحظات"] ? `<div class="detail-row"><span>ملاحظات</span><span>${esc(b["ملاحظات"])}</span></div>` : ""}
+  `;
+  document.getElementById("bookModal").classList.remove("hidden");
+}
+function closeBookModal() {
+  document.getElementById("bookModal").classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════
+// واجهة المعلم
+// ════════════════════════════════════════════════════
+function renderAdminBooks(books) {
+  const grid = document.getElementById("adminBooksGrid");
+  if (!books.length) { showAdminState("noResults"); return; }
+  showAdminState("grid");
+  grid.innerHTML = books.map(b => adminCard(b)).join("");
+}
+
+function adminCard(book) {
+  const borrowed = book["الحالة"] === "مُعار";
+  const part = book["الجزء"] && book["الجزء"] !== ""
+    ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  return `
+    <div class="book-card ${borrowed ? "borrowed" : ""}">
+      <div class="book-head">
+        <div class="book-emoji">📖</div>
+        <div class="book-titlebox">
+          <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+          <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        </div>
+      </div>
+      <div class="book-tags">
+        ${book["رقم التصنيف المكتبي"] ? `<span class="tag">رقم: ${esc(book["رقم التصنيف المكتبي"])}</span>` : ""}
+        <span class="tag ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "🔴 مُعار" : "✅ متوفر"}
+        </span>
+      </div>
+      <div class="book-meta-row">
+        <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+        <span>🔢 #${esc(book["الرقم المتسلسل"] || "")}</span>
+      </div>
+      ${borrowed ? `<div class="book-borrower">👤 المستعير: <strong>${esc(book["المستعير"] || "")}</strong> — ${esc(book["تاريخ الإعارة"] || "")}</div>` : ""}
+      <div class="book-actions">
+        ${borrowed
+          ? `<button class="btn btn-success btn-flex" onclick="doReturn(${book._row})">↩️ إرجاع</button>`
+          : `<button class="btn btn-success btn-flex" onclick="openBorrow(${book._row})">📤 إعارة</button>`}
+        <button class="btn btn-ghost"  onclick="openEdit(${book._row})">✏️</button>
+        <button class="btn btn-icon"   onclick="askDelete(${book._row})">🗑️</button>
+      </div>
+    </div>
+  `;
+}
+
+function adminFilterBooks() {
+  const q  = document.getElementById("adminSearch").value.trim().toLowerCase();
+  const st = document.getElementById("adminStatusFilter").value;
+  renderAdminBooks(applyFilter(allBooks, q, st));
+}
+
+function updateAdminStats(books) {
+  document.getElementById("aStatTotal").textContent     = books.length;
+  document.getElementById("aStatAvailable").textContent = books.filter(b => b["الحالة"] === "متوفر").length;
+  document.getElementById("aStatBorrowed").textContent  = books.filter(b => b["الحالة"] === "مُعار").length;
+}
+
+function showAdminState(state) {
+  ["adminLoading","adminBooksGrid","adminNoResults"].forEach(id =>
+    document.getElementById(id).classList.add("hidden"));
+  const map = { loading: "adminLoading", grid: "adminBooksGrid", noResults: "adminNoResults" };
+  document.getElementById(map[state]).classList.remove("hidden");
+}
+
+// ─── إضافة كتاب ───
+async function addBook() {
+  const title = document.getElementById("bookTitle").value.trim();
+  if (!title) { showMsg("addMsg", "❌ أدخل اسم الكتاب", "error"); return; }
+  const book = {
+    "اسم الكتاب":          title,
+    "المؤلف":              document.getElementById("bookAuthor").value.trim(),
+    "الجزء":               document.getElementById("bookPart").value.trim(),
+    "رقم التصنيف المكتبي":  document.getElementById("bookClass").value.trim(),
+    "رقم صفحة السجل":      document.getElementById("bookPage").value.trim(),
+    "ملاحظات":             document.getElementById("bookNotes").value.trim()
+  };
+  try {
+    const res = await apiPost({ action: "addBook", password: ADMIN_PASS, book });
+    if (res.error) throw new Error(res.error);
+    showMsg("addMsg", "✅ " + res.message, "success");
+    ["bookTitle","bookAuthor","bookPart","bookClass","bookPage","bookNotes"]
+      .forEach(id => document.getElementById(id).value = "");
+    await loadBooks();
+  } catch (e) {
+    showMsg("addMsg", "❌ " + e.message, "error");
+  }
+}
+
+// ─── استيراد ملف ───
+function handleFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  document.getElementById("fileInfo").innerHTML = `📄 <strong>${esc(file.name)}</strong> — جارٍ القراءة...`;
+  document.getElementById("fileInfo").classList.remove("hidden");
+  document.getElementById("filePreview").innerHTML = "";
+  document.getElementById("importFileBtn").classList.add("hidden");
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: "array" });
+
+      // البحث عن أفضل ورقة
+      let sheet = null;
+      let rows = [];
+      for (const name of wb.SheetNames) {
+        const ws = wb.Sheets[name];
+        // محاولة قراءة برأس الصف 0، ثم 5، ثم 6 (لملف الجرد الرسمي)
+        for (const headerRow of [0, 5, 6]) {
+          const tmp = XLSX.utils.sheet_to_json(ws, {
+            defval: "", range: headerRow
+          });
+          if (tmp.length > 0 && tmp.some(r => r["اسم الكتاب"] || r["اسم الكتاب "] || r["title"] || r["Title"])) {
+            sheet = name;
+            rows = tmp;
+            break;
+          }
+        }
+        if (rows.length) break;
+      }
+
+      if (!rows.length) {
+        document.getElementById("fileInfo").innerHTML =
+          `⚠️ لم نجد كتباً صالحة. تأكد من وجود عمود "اسم الكتاب"`;
+        return;
+      }
+
+      parsedFileBooks = rows.map(r => ({
+        "اسم الكتاب":         (r["اسم الكتاب"] || r["اسم الكتاب "] || r["title"] || r["Title"] || "").toString().trim(),
+        "المؤلف":             (r["المؤلف"]     || r["author"]      || r["Author"] || "").toString().trim(),
+        "الجزء":              (r["الجزء"]      || r["part"]        || "").toString().trim(),
+        "رقم التصنيف المكتبي": (r["رقم التصنيف المكتبي"] || r["التصنيف"] || r["category"] || "").toString().trim(),
+        "رقم صفحة السجل":     (r["رقم صفحة السجل"] || r["page"]    || "").toString().trim(),
+        "ملاحظات":            (r["ملاحظات"]    || r["notes"]       || "").toString().trim()
+      })).filter(b => b["اسم الكتاب"] && b["اسم الكتاب"] !== "nan");
+
+      if (!parsedFileBooks.length) {
+        document.getElementById("fileInfo").innerHTML = `⚠️ لم نجد كتباً صالحة`;
+        return;
+      }
+
+      document.getElementById("fileInfo").innerHTML =
+        `✅ <strong>${esc(file.name)}</strong> — <strong>${parsedFileBooks.length}</strong> كتاب جاهز للاستيراد`;
+
+      const preview = parsedFileBooks.slice(0, 5);
+      document.getElementById("filePreview").innerHTML = `
+        <table class="preview-table">
+          <thead>
+            <tr><th>#</th><th>اسم الكتاب</th><th>المؤلف</th><th>الجزء</th><th>سجل</th></tr>
+          </thead>
+          <tbody>
+            ${preview.map((b, i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td>${esc(b["اسم الكتاب"])}</td>
+                <td>${esc(b["المؤلف"]) || "—"}</td>
+                <td>${esc(b["الجزء"]) || "—"}</td>
+                <td>${esc(b["رقم صفحة السجل"]) || "—"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        ${parsedFileBooks.length > 5
+          ? `<p style="color:var(--text-soft);font-size:.85rem;text-align:center;margin-top:8px">
+               ... و ${parsedFileBooks.length - 5} كتاب آخر</p>`
+          : ""}
+      `;
+      document.getElementById("importFileBtn").classList.remove("hidden");
+
+    } catch (err) {
+      document.getElementById("fileInfo").innerHTML = `❌ خطأ: ${err.message}`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function importFromFile() {
+  if (!parsedFileBooks.length) return;
+  showMsg("importMsg", `⏳ جارٍ استيراد ${parsedFileBooks.length} كتاب...`, "success");
+  try {
+    // الاستيراد على دفعات (100 في كل مرة) لتجنّب timeout
+    const BATCH = 100;
+    let totalImported = 0;
+    for (let i = 0; i < parsedFileBooks.length; i += BATCH) {
+      const batch = parsedFileBooks.slice(i, i + BATCH);
+      const res = await apiPost({ action: "importBooks", password: ADMIN_PASS, books: batch });
+      if (res.error) throw new Error(res.error);
+      totalImported += batch.length;
+      showMsg("importMsg", `⏳ تم استيراد ${totalImported} من ${parsedFileBooks.length}...`, "success");
+    }
+    showMsg("importMsg", `✅ تم استيراد ${totalImported} كتاب للجرد`, "success");
+    document.getElementById("fileInput").value = "";
+    document.getElementById("fileInfo").classList.add("hidden");
+    document.getElementById("filePreview").innerHTML = "";
+    document.getElementById("importFileBtn").classList.add("hidden");
+    parsedFileBooks = [];
+    await loadBooks();
+  } catch (e) {
+    showMsg("importMsg", "❌ " + e.message, "error");
+  }
+}
+
+// ─── إعارة ───
+function openBorrow(row) {
+  const b = allBooks.find(x => x._row === row);
+  document.getElementById("adminModalBody").innerHTML = `
+    <h3>📤 تسجيل إعارة</h3>
+    <p style="color:var(--text-soft);margin:6px 0 16px">الكتاب: <strong>${esc(b["اسم الكتاب"])}</strong></p>
+    <div class="form-group">
+      <label>اسم المستعير</label>
+      <input type="text" id="borrowerName" placeholder="اسم الطالب أو المعلم...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-success" onclick="confirmBorrow(${row})">✅ تأكيد الإعارة</button>
+      <button class="btn btn-ghost" onclick="closeAdminModal()">إلغاء</button>
+    </div>
+  `;
+  document.getElementById("adminModal").classList.remove("hidden");
+  setTimeout(() => document.getElementById("borrowerName")?.focus(), 100);
+}
+
+async function confirmBorrow(row) {
+  const borrower = document.getElementById("borrowerName").value.trim();
+  if (!borrower) { toast("❌ أدخل اسم المستعير", "error"); return; }
+  try {
+    const res = await apiPost({ action: "borrow", password: ADMIN_PASS, row, borrower });
+    if (res.error) throw new Error(res.error);
+    closeAdminModal();
+    toast("✅ " + res.message);
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+async function doReturn(row) {
+  if (!confirm("تسجيل إرجاع هذا الكتاب؟")) return;
+  try {
+    const res = await apiPost({ action: "returnBook", password: ADMIN_PASS, row });
+    if (res.error) throw new Error(res.error);
+    toast("✅ " + res.message);
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+// ─── تعديل ───
+function openEdit(row) {
+  const b = allBooks.find(x => x._row === row);
+  if (!b) return;
+  editingRow = row;
+  document.getElementById("adminModalBody").innerHTML = `
+    <h3>✏️ تعديل الكتاب</h3>
+    <div class="form-row" style="margin-top:14px">
+      <div class="form-group full">
+        <label>اسم الكتاب *</label>
+        <input id="editTitle" type="text" value="${esc(b["اسم الكتاب"])}">
+      </div>
+      <div class="form-group">
+        <label>المؤلف</label>
+        <input id="editAuthor" type="text" value="${esc(b["المؤلف"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>الجزء</label>
+        <input id="editPart" type="text" value="${esc(b["الجزء"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>رقم التصنيف المكتبي</label>
+        <input id="editClass" type="text" value="${esc(b["رقم التصنيف المكتبي"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>رقم صفحة السجل</label>
+        <input id="editPage" type="text" value="${esc(b["رقم صفحة السجل"] || "")}">
+      </div>
+      <div class="form-group full">
+        <label>ملاحظات</label>
+        <textarea id="editNotes">${esc(b["ملاحظات"] || "")}</textarea>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="saveEdit()">💾 حفظ التعديلات</button>
+  `;
+  document.getElementById("adminModal").classList.remove("hidden");
+}
+
+async function saveEdit() {
+  const book = {
+    "اسم الكتاب":         document.getElementById("editTitle").value.trim(),
+    "المؤلف":             document.getElementById("editAuthor").value.trim(),
+    "الجزء":              document.getElementById("editPart").value.trim(),
+    "رقم التصنيف المكتبي": document.getElementById("editClass").value.trim(),
+    "رقم صفحة السجل":     document.getElementById("editPage").value.trim(),
+    "ملاحظات":            document.getElementById("editNotes").value.trim()
+  };
+  if (!book["اسم الكتاب"]) { toast("❌ اسم الكتاب مطلوب", "error"); return; }
+  try {
+    const res = await apiPost({ action: "updateBook", password: ADMIN_PASS, row: editingRow, book });
+    if (res.error) throw new Error(res.error);
+    closeAdminModal();
+    toast("✅ تم التعديل");
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+// ─── حذف ───
+function askDelete(row) {
+  pendingDeleteRow = row;
+  document.getElementById("deleteModal").classList.remove("hidden");
+}
+function closeDeleteModal() {
+  pendingDeleteRow = null;
+  document.getElementById("deleteModal").classList.add("hidden");
+}
+async function confirmDelete() {
+  if (!pendingDeleteRow) return;
+  try {
+    const res = await apiPost({ action: "deleteBook", password: ADMIN_PASS, row: pendingDeleteRow });
+    if (res.error) throw new Error(res.error);
+    closeDeleteModal();
+    toast("✅ تم الحذف");
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); closeDeleteModal(); }
+}
+function closeAdminModal() {
+  document.getElementById("adminModal").classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════
+// مساعدات
+// ════════════════════════════════════════════════════
+function applyFilter(books, q, st) {
+  return books.filter(b => {
+    const matchQ = !q ||
+      String(b["اسم الكتاب"]||"").toLowerCase().includes(q) ||
+      String(b["المؤلف"]||"").toLowerCase().includes(q) ||
+      String(b["رقم التصنيف المكتبي"]||"").toLowerCase().includes(q) ||
+      String(b["الرقم المتسلسل"]||"").toLowerCase().includes(q);
+    const matchSt = !st || b["الحالة"] === st;
+    return matchQ && matchSt;
+  });
+}
+
+async function apiPost(body) {
+  const res = await fetch(API_URL, {
+    method: "POST", mode: "cors",
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function toast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = `toast ${type}`;
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { t.className = "toast hidden"; }, 3500);
+}
+
+function showMsg(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `msg ${type}`;
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 5000);
+}
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadBooks();
+  const drop = document.getElementById("fileDropZone");
+  if (drop) {
+    drop.addEventListener("dragover",  e => { e.preventDefault(); drop.classList.add("drag"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+    drop.addEventListener("drop", e => {
+      e.preventDefault();
+      drop.classList.remove("drag");
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        document.getElementById("fileInput").files = e.dataTransfer.files;
+        handleFile({ target: { files: [file] } });
+      }
+    });
+  }
+});
+
+</script>
+</body>
+</html>
