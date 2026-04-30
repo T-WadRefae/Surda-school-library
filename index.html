@@ -29,6 +29,24 @@
     </button>
   </header>
 
+  <!-- ━━━━━━ Hero Section ━━━━━━ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-decorative">
+        <span>📖</span>
+        <span>🌟</span>
+        <span>📚</span>
+      </div>
+      <h1>أهلاً بكم في <span class="accent">مكتبتنا</span></h1>
+      <div class="hero-divider">
+        <span class="line"></span>
+        <span class="icon">✦</span>
+        <span class="line"></span>
+      </div>
+      <p>اكتشف عالماً من المعرفة والمتعة بين رفوف مكتبة مدرسة سردا الأساسية المختلطة. ابحث عن كتابك المفضل، تصفّح المجموعة، واغرف من بحر الكتب القيّمة.</p>
+    </div>
+  </section>
+
   <div class="page">
 
     <div class="stats">
@@ -85,7 +103,7 @@
   </div>
 
   <footer class="footer">
-    <p>مكتبة مدرسة سردا الأساسية المختلطة &nbsp;•&nbsp; المعلمة <strong>T. Wad Refae</strong></p>
+    <p>مكتبة مدرسة سردا الأساسية المختلطة <span class="footer-divider">✦</span> المعلمة <strong>T. Wad Refae</strong></p>
   </footer>
 
 </div>
@@ -94,7 +112,7 @@
 <!-- ═════════════════ شاشة دخول المعلم ═════════════════ -->
 <div id="loginScreen" class="login-overlay hidden">
   <div class="login-card">
-    <button class="login-back" onclick="hideLogin()">← رجوع للمكتبة</button>
+    <button class="login-back" onclick="hideLogin()">← رجوع</button>
     <div class="login-icon">🔐</div>
     <h2>لوحة إدارة المعلم</h2>
     <p class="subtitle">أدخل كلمة المرور للمتابعة</p>
@@ -129,7 +147,7 @@
     </button>
   </header>
 
-  <div class="page">
+  <div class="page" style="padding-top:24px">
 
     <div class="stats">
       <div class="stat">
@@ -159,6 +177,7 @@
       <button class="admin-tab active" data-tab="books"  onclick="switchTab('books')">📖 جميع الكتب</button>
       <button class="admin-tab"        data-tab="add"    onclick="switchTab('add')">➕ إضافة كتاب</button>
       <button class="admin-tab"        data-tab="import" onclick="switchTab('import')">📥 استيراد ملف</button>
+      <button class="admin-tab"        data-tab="ai"     onclick="switchTab('ai')">🤖 توليد نبذات</button>
     </div>
 
     <!-- ── جميع الكتب ── -->
@@ -190,7 +209,7 @@
     <div id="tab-add" class="tab-panel">
       <div class="panel">
         <h2>➕ إضافة كتاب جديد للجرد</h2>
-        <p class="panel-desc">سيُضاف الكتاب مباشرة إلى ملف الجرد الرسمي</p>
+        <p class="panel-desc">سيُضاف الكتاب مباشرة إلى الجرد، وستُولَّد له نبذة تعريفية تلقائياً</p>
 
         <div class="form-row">
           <div class="form-group full">
@@ -228,13 +247,12 @@
     <div id="tab-import" class="tab-panel">
       <div class="panel">
         <h2>📥 استيراد دفعة كتب</h2>
-        <p class="panel-desc">استورد الكتب من ملف Excel أو CSV — مناسب للجرد الأولي</p>
+        <p class="panel-desc">استورد الكتب من ملف Excel أو CSV — مع توليد نبذات تلقائية</p>
 
         <div class="panel-section">
           <h3>📂 من ملف Excel أو CSV</h3>
           <div class="hint">
-            يجب أن يحتوي الملف على الأعمدة التالية (الصف الأول رؤوس):<br>
-            <code>اسم الكتاب</code> ، <code>المؤلف</code> ، <code>الجزء</code> ، <code>رقم التصنيف المكتبي</code> ، <code>رقم صفحة السجل</code> ، <code>ملاحظات</code><br>
+            يجب أن يحتوي الملف على الأعمدة: <code>اسم الكتاب</code> ، <code>المؤلف</code> ، <code>الجزء</code> ، <code>رقم التصنيف المكتبي</code> ، <code>رقم صفحة السجل</code> ، <code>ملاحظات</code><br>
             الصيغ المدعومة: <code>.xlsx</code> ، <code>.xls</code> ، <code>.csv</code>
           </div>
 
@@ -256,10 +274,29 @@
       </div>
     </div>
 
+    <!-- ── توليد نبذات للكتب الموجودة ── -->
+    <div id="tab-ai" class="tab-panel">
+      <div class="panel">
+        <h2>🤖 توليد نبذات للكتب الموجودة</h2>
+        <p class="panel-desc">سيتم توليد نبذة تعريفية ذكية لكل كتاب لا يحتوي على نبذة بعد</p>
+
+        <div class="hint">
+          ℹ️ الأداة ستفحص جميع الـ <strong id="totalBooksHint">0</strong> كتاب في الجرد، وتولّد نبذة فقط للكتب التي ليس لها نبذة. الكتب التي لها نبذات لن تتأثر.
+          <br><br>
+          ⏱️ قد يستغرق العمل دقيقة إلى دقيقتين.
+        </div>
+
+        <button class="btn btn-accent btn-block" onclick="generateAllSummaries()" id="genBtn">
+          🤖 ابدأ توليد النبذات للكتب الفارغة
+        </button>
+        <div id="genMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
   </div>
 
   <footer class="footer">
-    <p>لوحة إدارة المكتبة &nbsp;•&nbsp; المعلمة <strong>T. Wad Refae</strong></p>
+    <p>لوحة إدارة المكتبة <span class="footer-divider">✦</span> المعلمة <strong>T. Wad Refae</strong></p>
   </footer>
 
 </div>
