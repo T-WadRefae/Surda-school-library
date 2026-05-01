@@ -292,7 +292,9 @@ function generateSummariesBatch(startRow, batchSize, force) {
   };
 }
 
-// 
+// توليد كل النبذات الفارغة (للكتب القليلة)
+function generateMissingSummaries() {
+  return generateSummariesBatch(2, 980);
 }
 
 // ─── الدالة الأساسية لتوليد نبذة بـ AI ───
