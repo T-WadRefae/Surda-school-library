@@ -294,7 +294,17 @@ function generateSummariesBatch(startRow, batchSize, force) {
 
 // توليد كل النبذات الفارغة (للكتب القليلة)
 function generateMissingSummaries() {
-  return generateSummariesBatch(2, 980);
+  return generateSummariesBatch(2, 20);
+
+  
+  if (!result.done) {
+    ScriptApp.newTrigger("generateMissingSummaries")
+      .timeBased()
+      .after(5000) // بعد 5 ثواني
+      .create();
+  }
+
+  return result;
 }
 
 // ─── الدالة الأساسية لتوليد نبذة بـ AI ───
