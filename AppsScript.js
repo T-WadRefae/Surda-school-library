@@ -219,11 +219,7 @@ function generateMissingSummaries() {
     sheet.getRange(i + 1, summaryCol).setValue(summary);
     count++;
 
-    // كل 50 كتاب، نوقف ثانية لتجنب timeout
-    if (count % 50 === 0) Utilities.sleep(100);
-  }
-
-  return { success: true, message: `تم توليد ${count} نبذة جديدة ✅`, count };
+    
 }
 
 // ─── محرك توليد النبذات الذكي ───
