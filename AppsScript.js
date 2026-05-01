@@ -294,7 +294,7 @@ function generateSummariesBatch(startRow, batchSize, force) {
 
 // توليد كل النبذات الفارغة (للكتب القليلة)
 function generateMissingSummaries() {
-  const result = generateSummariesBatch(2, 20);
+  const result = generateSummariesBatch(2, 100);
 
   // إذا لسا في كتب
   if (!result.done) {
@@ -311,7 +311,7 @@ function continueGenerating() {
 
   let startRow = parseInt(props.getProperty("NEXT_ROW") || "2");
 
-  const result = generateSummariesBatch(startRow, 20);
+  const result = generateSummariesBatch(startRow, 100);
 
   if (!result.done) {
     props.setProperty("NEXT_ROW", result.nextRow);
