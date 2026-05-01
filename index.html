@@ -20,16 +20,10 @@
         <p>الأساسية المختلطة</p>
       </div>
     </div>
-    <div class="topbar-teacher">
-      <span>المعلمة</span>
-      <strong>T. Wad Refae</strong>
-    </div>
     <button class="topbar-action" onclick="showLogin()">
       <span>🔑</span><span>دخول المعلم</span>
     </button>
   </header>
-
-  <!-- ━━━━━━ Hero Section ━━━━━━ -->
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-decorative">
@@ -44,6 +38,13 @@
         <span class="line"></span>
       </div>
       <p>اكتشف عالماً من المعرفة والمتعة بين رفوف مكتبة مدرسة سردا الأساسية المختلطة. ابحث عن كتابك المفضل، تصفّح المجموعة، واغرف من بحر الكتب القيّمة.</p>
+
+      <!-- شريط البحث الرئيسي في Hero -->
+      <div class="hero-search">
+        <span class="hero-search-icon">🔍</span>
+        <input type="text" id="globalSearch" placeholder="ابحث عن أي كتاب أو مؤلف في المكتبة..." oninput="globalSearchHandler()">
+        <button class="hero-search-clear" onclick="clearGlobalSearch()" id="globalClearBtn">✕</button>
+      </div>
     </div>
   </section>
 
@@ -121,7 +122,7 @@
   </div>
 
   <footer class="footer">
-    <p>مكتبة مدرسة سردا الأساسية المختلطة <span class="footer-divider">✦</span> المعلمة <strong>T. Wad Refae</strong></p>
+    <p>مكتبة مدرسة سردا الأساسية المختلطة <span class="footer-divider">✦</span> تصميم <strong>T. Wad Refae</strong></p>
   </footer>
 
 </div>
@@ -314,7 +315,7 @@
   </div>
 
   <footer class="footer">
-    <p>لوحة إدارة المكتبة <span class="footer-divider">✦</span> المعلمة <strong>T. Wad Refae</strong></p>
+    <p>لوحة إدارة المكتبة <span class="footer-divider">✦</span> تصميم <strong>T. Wad Refae</strong></p>
   </footer>
 
 </div>
