@@ -1,0 +1,2823 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبة مدرسة سردا الأساسية المختلطة</title>
+<style>
+/* ════════════════════════════════════════════════════
+   مكتبة مدرسة سردا الأساسية المختلطة
+   T. Wad Refae — تصميم عصري مع أغلفة كتب ملونة
+   ════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Amiri:wght@400;700&display=swap');
+
+:root {
+  /* ألوان الهوية — تراث فلسطيني عصري */
+  --primary:        #0d4d70;
+  --primary-dark:   #073854;
+  --primary-light:  #e8f1f7;
+  --accent:         #c9a227;
+  --accent-light:   #fef3c7;
+  --accent-dark:    #92750c;
+
+  --green:          #166534;
+  --green-soft:     #16794d;
+  --green-light:    #d1fae5;
+  --red:            #b91c1c;
+  --red-light:      #fee2e2;
+
+  /* ألوان أغلفة الكتب */
+  --cover-religious: #1e6091;
+  --cover-history:   #8b4513;
+  --cover-science:   #047857;
+  --cover-literature:#7c3aed;
+  --cover-stories:   #c2410c;
+  --cover-language:  #db2777;
+  --cover-general:   #4b5563;
+  --cover-encycl:    #0891b2;
+  --cover-palestine: #b91c1c;
+  --cover-nature:    #15803d;
+
+  --bg:             #f5f7fa;
+  --bg-soft:        #fafbfc;
+  --card:           #ffffff;
+  --text:           #1f2937;
+  --text-soft:      #6b7280;
+  --text-muted:     #9ca3af;
+  --border:         #e5e7eb;
+  --border-strong:  #d1d5db;
+
+  --radius:         12px;
+  --radius-lg:      16px;
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.06);
+  --shadow:         0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg:      0 10px 30px rgba(0,0,0,0.12);
+  --shadow-xl:      0 20px 50px rgba(0,0,0,0.18);
+
+  --font:           'Tajawal', system-ui, sans-serif;
+  --font-display:   'Amiri', 'Tajawal', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* خلفية تراثية ناعمة (نمط زخرفي خفيف) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(13,77,112,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(201,162,39,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+button { font-family: var(--font); cursor: pointer; }
+input, select, textarea { font-family: var(--font); }
+
+.hidden { display: none !important; }
+
+/* ════════════════════════════════════════════════════
+   شريط علوي (Topbar) — تصميم متطور
+════════════════════════════════════════════════════ */
+.topbar {
+  background:
+    linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, #1366a1 100%);
+  color: #fff;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 3px solid var(--accent);
+}
+
+.topbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.02) 10px, rgba(255,255,255,0.02) 20px);
+  pointer-events: none;
+}
+
+.topbar > * { position: relative; z-index: 1; }
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+}
+
+.topbar-icon {
+  font-size: 1.9rem;
+  background: rgba(255,255,255,0.18);
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.topbar-titles h1 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  margin-bottom: 2px;
+  font-family: var(--font-display);
+}
+
+.topbar-titles p {
+  font-size: 0.8rem;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.topbar-teacher {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.75rem;
+  opacity: 0.95;
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 10px;
+  border-right: 3px solid var(--accent);
+  backdrop-filter: blur(10px);
+}
+.topbar-teacher strong {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.topbar-action {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  padding: 9px 18px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s;
+  white-space: nowrap;
+  backdrop-filter: blur(10px);
+}
+.topbar-action:hover {
+  background: rgba(255,255,255,0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+.topbar-action.danger {
+  background: rgba(220,38,38,0.55);
+  border-color: rgba(255,200,200,0.3);
+}
+.topbar-action.danger:hover { background: rgba(220,38,38,0.85); }
+
+/* ════════════════════════════════════════════════════
+   Hero Section — صفحة الترحيب
+════════════════════════════════════════════════════ */
+.hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  padding: 50px 28px 70px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(201,162,39,0.18) 0%, transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.08) 0%, transparent 40%);
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: var(--bg);
+  clip-path: polygon(0 100%, 100% 100%, 100% 0, 50% 70%, 0 0);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: heroFadeIn 0.7s ease-out;
+}
+
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-decorative {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-size: 2.6rem;
+}
+.hero-decorative span {
+  display: inline-block;
+  animation: bookFloat 3s ease-in-out infinite;
+}
+.hero-decorative span:nth-child(2) { animation-delay: 0.3s; }
+.hero-decorative span:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes bookFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.hero h1 .accent { color: var(--accent); }
+
+.hero p {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  opacity: 0.95;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0 8px;
+}
+.hero-divider .line {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+}
+.hero-divider .icon { color: var(--accent); font-size: 1.1rem; }
+
+/* ════════════════════════════════════════════════════
+   حاوية الصفحة
+════════════════════════════════════════════════════ */
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+}
+
+/* ════════════════════════════════════════════════════
+   إحصائيات
+════════════════════════════════════════════════════ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  animation: statSlideIn 0.5s ease-out backwards;
+}
+.stat:nth-child(1) { animation-delay: 0.1s; }
+.stat:nth-child(2) { animation-delay: 0.2s; }
+.stat:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes statSlideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.stat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.stat-icon {
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.stat-icon.total     { background: var(--primary-light); color: var(--primary); }
+.stat-icon.available { background: var(--green-light);   color: var(--green-soft); }
+.stat-icon.borrowed  { background: var(--red-light);     color: var(--red); }
+
+.stat-num {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+/* ════════════════════════════════════════════════════
+   شريط البحث (Toolbar)
+════════════════════════════════════════════════════ */
+.toolbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+.search-input span {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.search-input input {
+  width: 100%;
+  padding: 11px 40px 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  background: var(--bg-soft);
+  transition: all 0.2s;
+}
+.search-input input:focus {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.1);
+}
+
+.toolbar select {
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.92rem;
+  background: var(--bg-soft);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+  min-width: 170px;
+  transition: all 0.2s;
+}
+.toolbar select:focus { border-color: var(--primary); background: #fff; }
+
+/* ════════════════════════════════════════════════════
+   شبكة الكتب — تصميم بطاقات أنيق
+════════════════════════════════════════════════════ */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  animation: cardFadeUp 0.4s ease-out backwards;
+}
+
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.book-card.clickable { cursor: pointer; }
+.book-card.clickable:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+.book-card.clickable:hover .book-cover {
+  transform: rotate(-2deg) scale(1.04);
+}
+
+/* غلاف الكتاب الرمزي */
+.book-cover {
+  position: relative;
+  height: 110px;
+  background: var(--cover-general);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+/* تصنيف الأغلفة بالألوان */
+.book-cover.religious  { background: linear-gradient(135deg, #1e6091, #0d4d70); }
+.book-cover.history    { background: linear-gradient(135deg, #8b4513, #654321); }
+.book-cover.science    { background: linear-gradient(135deg, #047857, #065f46); }
+.book-cover.literature { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.book-cover.stories    { background: linear-gradient(135deg, #c2410c, #9a3412); }
+.book-cover.language   { background: linear-gradient(135deg, #db2777, #9d174d); }
+.book-cover.general    { background: linear-gradient(135deg, #4b5563, #374151); }
+.book-cover.encycl     { background: linear-gradient(135deg, #0891b2, #155e75); }
+.book-cover.palestine  { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+.book-cover.nature     { background: linear-gradient(135deg, #15803d, #14532d); }
+
+/* نمط زخرفي على الغلاف */
+.book-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,0.06) 12px, rgba(255,255,255,0.06) 24px);
+}
+.book-cover::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 5px;
+  background: rgba(0,0,0,0.25);
+  box-shadow: inset -1px 0 2px rgba(255,255,255,0.15);
+}
+
+/* أيقونة الكتاب على الغلاف */
+.book-cover-icon {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+  animation: subtleFloat 3s ease-in-out infinite;
+}
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* رقم الكتاب على الغلاف */
+.book-cover-num {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* شريط الحالة على الغلاف */
+.book-cover-status {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  backdrop-filter: blur(8px);
+}
+.book-cover-status.available {
+  background: rgba(34,197,94,0.85);
+  color: #fff;
+}
+.book-cover-status.borrowed {
+  background: rgba(239,68,68,0.85);
+  color: #fff;
+}
+
+/* محتوى البطاقة */
+.book-body {
+  padding: 16px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.book-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.8em;
+}
+
+.book-author {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.book-author::before { content: '✍️'; opacity: 0.7; font-size: 0.85rem; }
+
+.book-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  margin-top: auto;
+}
+.book-meta-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.part-badge {
+  display: inline-block;
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.book-borrower {
+  background: var(--accent-light);
+  border-right: 3px solid var(--accent);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  color: var(--accent-dark);
+}
+.book-borrower strong { color: #78350f; }
+
+.book-actions {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 16px;
+  flex-wrap: wrap;
+}
+
+/* ════════════════════════════════════════════════════
+   أزرار
+════════════════════════════════════════════════════ */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 9px 15px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(13,77,112,0.25);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13,77,112,0.35);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--green-soft), var(--green));
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(22,121,77,0.25);
+}
+.btn-success:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22,121,77,0.35); }
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--red), #991b1b);
+  color: #fff;
+}
+.btn-danger:hover { transform: translateY(-2px); }
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(201,162,39,0.3);
+}
+.btn-accent:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(201,162,39,0.4); }
+
+.btn-ghost {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--border); }
+
+.btn-icon {
+  background: var(--bg);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  padding: 9px 11px;
+}
+.btn-icon:hover { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+
+.btn-block { width: 100%; padding: 12px; font-size: 0.95rem; }
+.btn-flex { flex: 1; }
+
+/* ════════════════════════════════════════════════════
+   حالات (تحميل/خطأ/فارغ)
+════════════════════════════════════════════════════ */
+.state {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 70px 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.state-icon {
+  font-size: 3.5rem;
+  margin-bottom: 14px;
+  display: block;
+  animation: subtleFloat 3s ease-in-out infinite;
+}
+.state-text {
+  color: var(--text-soft);
+  margin-bottom: 18px;
+  font-size: 1rem;
+}
+
+.spinner {
+  width: 44px; height: 44px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ════════════════════════════════════════════════════
+   شاشة تسجيل الدخول
+════════════════════════════════════════════════════ */
+.login-overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 200;
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.login-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 30% 30%, rgba(201,162,39,0.15) 0%, transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(255,255,255,0.1) 0%, transparent 40%);
+}
+
+.login-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 44px 36px 32px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.45);
+  position: relative;
+  animation: popIn 0.3s ease;
+  border-top: 4px solid var(--accent);
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.login-back {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.login-back:hover { color: var(--primary); }
+
+.login-icon {
+  font-size: 2.6rem;
+  background: linear-gradient(135deg, var(--primary-light), #d4e3ed);
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  box-shadow: 0 8px 20px rgba(13,77,112,0.15);
+}
+
+.login-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.login-card .subtitle {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  margin-bottom: 24px;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 13px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+  margin-bottom: 14px;
+  transition: all 0.2s;
+}
+.login-card input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.1);
+}
+
+.login-error {
+  margin-top: 14px;
+  background: var(--red-light);
+  color: var(--red);
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ════════════════════════════════════════════════════
+   تبويبات لوحة المعلم
+════════════════════════════════════════════════════ */
+.admin-tabs {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.admin-tab {
+  background: none;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.admin-tab:hover { background: var(--bg); color: var(--text); }
+.admin-tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(13,77,112,0.3);
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeInUp 0.3s ease; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ════════════════════════════════════════════════════
+   البطاقات (نماذج / محتوى)
+════════════════════════════════════════════════════ */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.panel .panel-desc {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  margin-bottom: 22px;
+}
+
+.panel-section {
+  padding: 20px;
+  background: var(--bg);
+  border-radius: var(--radius);
+  margin-bottom: 18px;
+}
+.panel-section:last-child { margin-bottom: 0; }
+
+.panel-section h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full { grid-column: 1 / -1; }
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 11px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.94rem;
+  background: #fff;
+  outline: none;
+  transition: all 0.2s;
+  color: var(--text);
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(13,77,112,0.08);
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 75px;
+  font-family: var(--font);
+}
+
+.hint {
+  background: linear-gradient(135deg, var(--accent-light), #fef9e8);
+  border-right: 3px solid var(--accent);
+  padding: 12px 16px;
+  border-radius: 7px;
+  font-size: 0.88rem;
+  color: var(--accent-dark);
+  margin-bottom: 14px;
+  line-height: 1.7;
+}
+.hint code {
+  background: rgba(0,0,0,0.08);
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+/* رفع ملف */
+.file-drop {
+  border: 2.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  padding: 32px 20px;
+  text-align: center;
+  background: var(--bg);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.file-drop:hover, .file-drop.drag {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  transform: scale(1.01);
+}
+.file-drop-icon { font-size: 2.5rem; margin-bottom: 10px; }
+.file-drop-text { font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.file-drop-sub  { font-size: 0.85rem; color: var(--text-soft); }
+.file-drop input[type="file"] { display: none; }
+
+.file-info {
+  margin-top: 14px;
+  background: linear-gradient(135deg, var(--green-light), #ecfccb);
+  border-right: 3px solid var(--green-soft);
+  padding: 11px 16px;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: var(--green);
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  font-size: 0.86rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.preview-table th {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 10px 13px;
+  text-align: right;
+  font-weight: 700;
+}
+.preview-table td {
+  padding: 9px 13px;
+  border-bottom: 1px solid var(--border);
+}
+.preview-table tr:last-child td { border-bottom: none; }
+.preview-table tr:hover td { background: var(--bg); }
+
+.msg {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-top: 14px;
+}
+.msg.success { background: var(--green-light); color: #064e3b; }
+.msg.error   { background: var(--red-light);   color: #991b1b; }
+
+/* ════════════════════════════════════════════════════
+   Modals
+════════════════════════════════════════════════════ */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  max-width: 540px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalPopIn 0.3s ease;
+  box-shadow: var(--shadow-xl);
+}
+.modal.small { max-width: 400px; text-align: center; }
+
+@keyframes modalPopIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-15px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: var(--bg);
+  border: none;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: var(--border); color: var(--text); transform: rotate(90deg); }
+
+.modal h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+/* تفاصيل كتاب — تصميم احترافي */
+.detail-cover {
+  width: 110px;
+  height: 150px;
+  background: var(--cover-general);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  font-size: 3rem;
+  position: relative;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+.detail-cover.religious  { background: linear-gradient(135deg, #1e6091, #0d4d70); }
+.detail-cover.history    { background: linear-gradient(135deg, #8b4513, #654321); }
+.detail-cover.science    { background: linear-gradient(135deg, #047857, #065f46); }
+.detail-cover.literature { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.detail-cover.stories    { background: linear-gradient(135deg, #c2410c, #9a3412); }
+.detail-cover.language   { background: linear-gradient(135deg, #db2777, #9d174d); }
+.detail-cover.general    { background: linear-gradient(135deg, #4b5563, #374151); }
+.detail-cover.encycl     { background: linear-gradient(135deg, #0891b2, #155e75); }
+.detail-cover.palestine  { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+.detail-cover.nature     { background: linear-gradient(135deg, #15803d, #14532d); }
+
+.detail-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(255,255,255,0.07) 12px, rgba(255,255,255,0.07) 24px);
+}
+.detail-cover::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 6px;
+  background: rgba(0,0,0,0.3);
+}
+.detail-cover-icon {
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+.detail-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.detail-author {
+  text-align: center;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+}
+.detail-tags {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.detail-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+}
+.detail-tag.available { background: var(--green-light); color: var(--green-soft); }
+.detail-tag.borrowed  { background: var(--red-light); color: var(--red); }
+
+.detail-summary {
+  background: linear-gradient(135deg, var(--bg), #f0f4f8);
+  padding: 16px 18px;
+  border-radius: 10px;
+  border-right: 4px solid var(--primary);
+  line-height: 1.85;
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: 0.95rem;
+  position: relative;
+}
+.detail-summary::before {
+  content: '"';
+  font-family: var(--font-display);
+  position: absolute;
+  top: -10px;
+  right: 14px;
+  font-size: 3rem;
+  color: var(--primary);
+  opacity: 0.2;
+  line-height: 1;
+}
+
+.detail-summary-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-radius: 7px;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+}
+.detail-row span:first-child { color: var(--text-soft); }
+.detail-row span:last-child { font-weight: 700; }
+
+/* ════════════════════════════════════════════════════
+   Toast
+════════════════════════════════════════════════════ */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: #fff;
+  padding: 13px 24px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 999;
+  animation: toastIn 0.3s ease;
+  white-space: nowrap;
+  max-width: 90vw;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.toast.success { background: linear-gradient(135deg, var(--green-soft), var(--green)); }
+.toast.error   { background: linear-gradient(135deg, var(--red), #991b1b); }
+@keyframes toastIn {
+  from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════════
+   Footer
+════════════════════════════════════════════════════ */
+.footer {
+  text-align: center;
+  padding: 24px 20px;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  margin-top: 50px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+.footer strong { color: var(--primary); }
+.footer .footer-divider { color: var(--accent); margin: 0 6px; }
+
+/* ════════════════════════════════════════════════════
+   Responsive
+════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .topbar { padding: 12px 16px; gap: 12px; }
+  .topbar-titles h1 { font-size: 1rem; }
+  .topbar-titles p  { font-size: 0.72rem; }
+  .topbar-teacher { display: none; }
+  .topbar-action span:not(:first-child) { display: none; }
+  .hero { padding: 36px 20px 50px; }
+  .page { padding: 0 16px 16px; }
+  .stats { grid-template-columns: 1fr; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .toolbar select { width: 100%; }
+  .form-row { grid-template-columns: 1fr; }
+  .books-grid { grid-template-columns: 1fr; }
+}
+
+/* ════════════════════════════════════════════════════
+   بطاقات التصنيفات (الصفحة الرئيسية)
+════════════════════════════════════════════════════ */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.category-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
+  animation: cardFadeUp 0.4s ease-out backwards;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.category-card:hover .cat-banner {
+  transform: scale(1.05);
+}
+
+.category-card:hover .cat-arrow {
+  transform: translateX(-6px);
+  opacity: 1;
+}
+
+/* البانر الملون لكل تصنيف */
+.cat-banner {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.cat-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.07) 14px, rgba(255,255,255,0.07) 28px);
+}
+
+.cat-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  right: -20px;
+  height: 50px;
+  background: var(--card);
+  border-radius: 50% 50% 0 0;
+}
+
+/* ألوان البانرات حسب التصنيف */
+.cat-banner.religious  { background: linear-gradient(135deg, #1e6091, #0d4d70); }
+.cat-banner.history    { background: linear-gradient(135deg, #8b4513, #654321); }
+.cat-banner.science    { background: linear-gradient(135deg, #047857, #065f46); }
+.cat-banner.literature { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.cat-banner.stories    { background: linear-gradient(135deg, #c2410c, #9a3412); }
+.cat-banner.language   { background: linear-gradient(135deg, #db2777, #9d174d); }
+.cat-banner.encycl     { background: linear-gradient(135deg, #0891b2, #155e75); }
+.cat-banner.palestine  { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+.cat-banner.nature     { background: linear-gradient(135deg, #15803d, #14532d); }
+.cat-banner.general    { background: linear-gradient(135deg, #4b5563, #374151); }
+
+.cat-icon {
+  font-size: 4rem;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+  position: relative;
+  z-index: 1;
+  animation: subtleFloat 3.5s ease-in-out infinite;
+}
+
+/* محتوى البطاقة */
+.cat-body {
+  padding: 18px 20px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: -10px;
+  background: var(--card);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.cat-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cat-arrow {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+/* ════════════════════════════════════════════════════
+   عنوان التصنيف (أعلى صفحة الكتب)
+════════════════════════════════════════════════════ */
+.category-header {
+  background: linear-gradient(135deg, var(--card), var(--bg));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+  border-right: 4px solid var(--primary);
+  animation: fadeInUp 0.3s ease;
+}
+
+.cat-header-icon {
+  font-size: 2.4rem;
+  background: var(--primary-light);
+  width: 64px; height: 64px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cat-header-text h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.cat-header-text p {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+
+/* ════════════════════════════════════════════════════
+   شريط البحث الرئيسي في Hero
+════════════════════════════════════════════════════ */
+.hero-search {
+  margin: 26px auto 0;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 6px 6px 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 2;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.hero-search-icon {
+  font-size: 1.2rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.hero-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  padding: 12px 4px;
+  color: var(--text);
+  background: transparent;
+  direction: rtl;
+}
+
+.hero-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.hero-search-clear {
+  display: none;
+  background: var(--bg);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.hero-search-clear:hover {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+/* ════════════════════════════════════════════════════
+   ألوان أغلفة جديدة (أطفال + إنجليزي)
+════════════════════════════════════════════════════ */
+.cat-banner.children   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.cat-banner.english    { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
+
+.book-cover.children   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.book-cover.english    { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
+
+.detail-cover.children { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.detail-cover.english  { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ═════════════════ واجهة الطالب ═════════════════ -->
+<div id="studentView">
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-icon">📚</div>
+      <div class="topbar-titles">
+        <h1>مكتبة مدرسة سردا</h1>
+        <p>الأساسية المختلطة</p>
+      </div>
+    </div>
+    <button class="topbar-action" onclick="showLogin()">
+      <span>🔑</span><span>دخول المعلم</span>
+    </button>
+  </header>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-decorative">
+        <span>📖</span>
+        <span>🌟</span>
+        <span>📚</span>
+      </div>
+      <h1>أهلاً بكم في <span class="accent">مكتبتنا</span></h1>
+      <div class="hero-divider">
+        <span class="line"></span>
+        <span class="icon">✦</span>
+        <span class="line"></span>
+      </div>
+      <p>اكتشف عالماً من المعرفة والمتعة بين رفوف مكتبة مدرسة سردا الأساسية المختلطة. ابحث عن كتابك المفضل، تصفّح المجموعة، واغرف من بحر الكتب القيّمة.</p>
+
+      <!-- شريط البحث الرئيسي في Hero -->
+      <div class="hero-search">
+        <span class="hero-search-icon">🔍</span>
+        <input type="text" id="globalSearch" placeholder="ابحث عن أي كتاب أو مؤلف في المكتبة..." oninput="globalSearchHandler()">
+        <button class="hero-search-clear" onclick="clearGlobalSearch()" id="globalClearBtn">✕</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon total">📚</div>
+        <div>
+          <div class="stat-num" id="statTotal">0</div>
+          <div class="stat-label">إجمالي الكتب</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon available">✅</div>
+        <div>
+          <div class="stat-num" id="statAvailable">0</div>
+          <div class="stat-label">متوفر للقراءة</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon borrowed">📤</div>
+        <div>
+          <div class="stat-num" id="statBorrowed">0</div>
+          <div class="stat-label">مُعار حالياً</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- شريط البحث (يظهر فقط داخل التصنيف) -->
+    <div class="toolbar" id="searchToolbar" style="display:none">
+      <button class="btn btn-ghost" onclick="backToCategories()">← العودة للتصنيفات</button>
+      <div class="search-input">
+        <span>🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث في هذا التصنيف..." oninput="filterBooks()">
+      </div>
+      <select id="statusFilter" onchange="filterBooks()">
+        <option value="">📊 كل الحالات</option>
+        <option value="متوفر">✅ متوفر</option>
+        <option value="مُعار">🔴 مُعار</option>
+      </select>
+    </div>
+
+    <!-- عنوان التصنيف الحالي (يظهر فقط داخل التصنيف) -->
+    <div class="category-header hidden" id="categoryHeader">
+      <span class="cat-header-icon" id="catHeaderIcon">📚</span>
+      <div class="cat-header-text">
+        <h2 id="catHeaderName">التصنيف</h2>
+        <p id="catHeaderCount">0 كتاب</p>
+      </div>
+    </div>
+
+    <!-- حالات التحميل -->
+    <div id="loadingState" class="state">
+      <div class="spinner"></div>
+      <div class="state-text">جارٍ تحميل الجرد...</div>
+    </div>
+    <div id="errorState" class="state hidden">
+      <span class="state-icon">⚠️</span>
+      <div class="state-text" id="errorMsg">تعذّر الاتصال بالخادم</div>
+      <button class="btn btn-primary" onclick="loadBooks()">🔄 إعادة المحاولة</button>
+    </div>
+
+    <!-- شبكة التصنيفات (الصفحة الرئيسية) -->
+    <div id="categoriesGrid" class="categories-grid hidden"></div>
+
+    <!-- شبكة الكتب (داخل تصنيف) -->
+    <div id="booksGrid" class="books-grid hidden"></div>
+
+    <div id="noResults" class="state hidden">
+      <span class="state-icon">📭</span>
+      <div class="state-text">لا توجد كتب تطابق بحثك</div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>مكتبة مدرسة سردا الأساسية المختلطة <span class="footer-divider">✦</span> تصميم <strong>T. Wad Refae</strong></p>
+  </footer>
+
+</div>
+
+
+<!-- ═════════════════ شاشة دخول المعلم ═════════════════ -->
+<div id="loginScreen" class="login-overlay hidden">
+  <div class="login-card">
+    <button class="login-back" onclick="hideLogin()">← رجوع</button>
+    <div class="login-icon">🔐</div>
+    <h2>لوحة إدارة المعلم</h2>
+    <p class="subtitle">أدخل كلمة المرور للمتابعة</p>
+    <input type="password" id="adminPwd" placeholder="كلمة المرور..."
+           onkeyup="if(event.key==='Enter') doLogin()">
+    <button class="btn btn-primary btn-block" onclick="doLogin()">دخول</button>
+    <div id="loginErr" class="login-error hidden">❌ كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════ واجهة المعلم ═════════════════ -->
+<div id="adminView" class="hidden">
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-icon">🛠️</div>
+      <div class="topbar-titles">
+        <h1>لوحة إدارة المكتبة</h1>
+        <p>مدرسة سردا الأساسية المختلطة</p>
+      </div>
+    </div>
+    <div class="topbar-teacher">
+      <span>المعلمة</span>
+      <strong>T. Wad Refae</strong>
+    </div>
+    <button class="topbar-action" onclick="switchToStudent()">
+      <span>👁️</span><span>واجهة الطالب</span>
+    </button>
+    <button class="topbar-action danger" onclick="logout()">
+      <span>🚪</span><span>خروج</span>
+    </button>
+  </header>
+
+  <div class="page" style="padding-top:24px">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-icon total">📚</div>
+        <div>
+          <div class="stat-num" id="aStatTotal">0</div>
+          <div class="stat-label">إجمالي الكتب</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon available">✅</div>
+        <div>
+          <div class="stat-num" id="aStatAvailable">0</div>
+          <div class="stat-label">متوفر</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon borrowed">📤</div>
+        <div>
+          <div class="stat-num" id="aStatBorrowed">0</div>
+          <div class="stat-label">مُعار</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="books"  onclick="switchTab('books')">📖 جميع الكتب</button>
+      <button class="admin-tab"        data-tab="add"    onclick="switchTab('add')">➕ إضافة كتاب</button>
+      <button class="admin-tab"        data-tab="import" onclick="switchTab('import')">📥 استيراد ملف</button>
+      <button class="admin-tab"        data-tab="ai"     onclick="switchTab('ai')">🤖 توليد نبذات</button>
+    </div>
+
+    <!-- ── جميع الكتب ── -->
+    <div id="tab-books" class="tab-panel active">
+      <div class="toolbar">
+        <div class="search-input">
+          <span>🔍</span>
+          <input type="text" id="adminSearch" placeholder="ابحث في الكتب..." oninput="adminFilterBooks()">
+        </div>
+        <select id="adminStatusFilter" onchange="adminFilterBooks()">
+          <option value="">📊 كل الحالات</option>
+          <option value="متوفر">✅ متوفر</option>
+          <option value="مُعار">🔴 مُعار</option>
+        </select>
+      </div>
+
+      <div id="adminLoading" class="state">
+        <div class="spinner"></div>
+        <div class="state-text">جارٍ التحميل...</div>
+      </div>
+      <div id="adminBooksGrid" class="books-grid hidden"></div>
+      <div id="adminNoResults" class="state hidden">
+        <span class="state-icon">📭</span>
+        <div class="state-text">لا توجد كتب</div>
+      </div>
+    </div>
+
+    <!-- ── إضافة كتاب ── -->
+    <div id="tab-add" class="tab-panel">
+      <div class="panel">
+        <h2>➕ إضافة كتاب جديد للجرد</h2>
+        <p class="panel-desc">سيُضاف الكتاب مباشرة إلى الجرد، وستُولَّد له نبذة تعريفية تلقائياً</p>
+
+        <div class="form-row">
+          <div class="form-group full">
+            <label>اسم الكتاب *</label>
+            <input type="text" id="bookTitle" placeholder="مثال: في رحاب القرآن الكريم">
+          </div>
+          <div class="form-group">
+            <label>المؤلف</label>
+            <input type="text" id="bookAuthor" placeholder="اسم المؤلف">
+          </div>
+          <div class="form-group">
+            <label>الجزء</label>
+            <input type="text" id="bookPart" placeholder="1، الجزء الأول، ...">
+          </div>
+          <div class="form-group">
+            <label>رقم التصنيف المكتبي</label>
+            <input type="text" id="bookClass" placeholder="رقم التصنيف (إن وجد)">
+          </div>
+          <div class="form-group">
+            <label>رقم صفحة السجل</label>
+            <input type="text" id="bookPage" placeholder="رقم الصفحة">
+          </div>
+          <div class="form-group full">
+            <label>ملاحظات (اختياري)</label>
+            <textarea id="bookNotes" placeholder="أي ملاحظات إضافية"></textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="addBook()">➕ إضافة للجرد</button>
+        <div id="addMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
+    <!-- ── استيراد ملف ── -->
+    <div id="tab-import" class="tab-panel">
+      <div class="panel">
+        <h2>📥 استيراد دفعة كتب</h2>
+        <p class="panel-desc">استورد الكتب من ملف Excel أو CSV — مع توليد نبذات تلقائية</p>
+
+        <div class="panel-section">
+          <h3>📂 من ملف Excel أو CSV</h3>
+          <div class="hint">
+            يجب أن يحتوي الملف على الأعمدة: <code>اسم الكتاب</code> ، <code>المؤلف</code> ، <code>الجزء</code> ، <code>رقم التصنيف المكتبي</code> ، <code>رقم صفحة السجل</code> ، <code>ملاحظات</code><br>
+            الصيغ المدعومة: <code>.xlsx</code> ، <code>.xls</code> ، <code>.csv</code>
+          </div>
+
+          <label class="file-drop" id="fileDropZone">
+            <div class="file-drop-icon">📁</div>
+            <div class="file-drop-text">اضغط لاختيار ملف أو اسحبه هنا</div>
+            <div class="file-drop-sub">Excel (.xlsx, .xls) أو CSV</div>
+            <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(event)">
+          </label>
+
+          <div id="fileInfo" class="file-info hidden"></div>
+          <div id="filePreview"></div>
+
+          <button id="importFileBtn" class="btn btn-primary btn-block hidden" style="margin-top:14px"
+                  onclick="importFromFile()">📥 استيراد للجرد</button>
+        </div>
+
+        <div id="importMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
+    <!-- ── توليد نبذات بـ AI الحقيقي ── -->
+    <div id="tab-ai" class="tab-panel">
+      <div class="panel">
+        <h2>🤖 توليد نبذات بالذكاء الاصطناعي</h2>
+        <p class="panel-desc">يُستخدم ChatGPT (OpenAI) لإنتاج نبذات حقيقية ومفصّلة لكل كتاب</p>
+
+        <div class="hint" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#d97706">
+          <strong>⚠️ قبل الاستخدام:</strong> يجب إضافة <code>OPENAI_API_KEY</code> في خصائص السكريبت.<br><br>
+          <strong>الخطوات:</strong>
+          <ol style="margin:8px 16px 0;line-height:1.9">
+            <li>افتحي Apps Script</li>
+            <li>اضغطي على ⚙️ <strong>إعدادات المشروع</strong></li>
+            <li>انزلي لـ <strong>خصائص السكريبت</strong></li>
+            <li>اضغطي <strong>إضافة خاصية</strong></li>
+            <li>الاسم: <code>OPENAI_API_KEY</code></li>
+            <li>القيمة: مفتاحك من platform.openai.com/api-keys</li>
+            <li>احفظي وأعيدي نشر السكريبت</li>
+          </ol>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-bottom:14px">
+          <button class="btn btn-ghost btn-flex" onclick="testAI()" id="testAIBtn">
+            🧪 اختبار AI أولاً
+          </button>
+          <button class="btn btn-accent btn-flex" onclick="generateAllSummaries()" id="genBtn">
+            🤖 ابدأ توليد النبذات بـ AI
+          </button>
+        </div>
+
+        <div class="hint">
+          ℹ️ سيُولِّد النظام نبذة لكل كتاب لا يحتوي على نبذة. الكتب التي لها نبذات لن تتأثر.<br>
+          ⏱️ لـ 980 كتاب: <strong>~10-15 دقيقة</strong> | 💵 التكلفة التقريبية: <strong>$0.50 - $1</strong>
+        </div>
+
+        <div id="genMsg" class="msg hidden"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>لوحة إدارة المكتبة <span class="footer-divider">✦</span> تصميم <strong>T. Wad Refae</strong></p>
+  </footer>
+
+</div>
+
+
+<!-- Modals -->
+<div id="bookModal" class="modal-bg hidden" onclick="if(event.target===this) closeBookModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBookModal()">✕</button>
+    <div id="bookModalBody"></div>
+  </div>
+</div>
+
+<div id="adminModal" class="modal-bg hidden" onclick="if(event.target===this) closeAdminModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeAdminModal()">✕</button>
+    <div id="adminModalBody"></div>
+  </div>
+</div>
+
+<div id="deleteModal" class="modal-bg hidden">
+  <div class="modal small">
+    <div class="state-icon" style="font-size:2.5rem">🗑️</div>
+    <h3>تأكيد الحذف</h3>
+    <p style="color:var(--text-soft);margin:8px 0 4px">هل أنت متأكد من حذف هذا الكتاب من الجرد؟</p>
+    <p style="color:var(--red);font-size:.85rem">لا يمكن التراجع عن هذا الإجراء</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="confirmDelete()">نعم، احذف</button>
+      <button class="btn btn-ghost"  onclick="closeDeleteModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+// ════════════════════════════════════════════════════
+// مكتبة مدرسة سردا الأساسية المختلطة
+// المعلمة: T. Wad Refae
+// app.js — مع نبذات ذكية وأغلفة ملونة
+// ════════════════════════════════════════════════════
+
+const API_URL    = "https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec";
+const ADMIN_PASS = "Surda123surda";
+
+let allBooks         = [];
+let isAdmin          = false;
+let pendingDeleteRow = null;
+let editingRow       = null;
+let parsedFileBooks  = [];
+let currentCategory  = null; // التصنيف المعروض حالياً (null = صفحة التصنيفات)
+
+// ─── قائمة التصنيفات الرئيسية ───
+const CATEGORIES = [
+  { key: "religious",  name: "ديني وإسلامي",   icon: "🕌" },
+  { key: "palestine",  name: "فلسطين والقضية", icon: "🇵🇸" },
+  { key: "history",    name: "تاريخ وحضارة",   icon: "🏛️" },
+  { key: "science",    name: "علوم ومعارف",    icon: "🔬" },
+  { key: "literature", name: "أدب وشعر",       icon: "✒️" },
+  { key: "stories",    name: "قصص وروايات",    icon: "📖" },
+  { key: "children",   name: "قصص أطفال",      icon: "🧸" },
+  { key: "english",    name: "كتب باللغة الإنجليزية", icon: "🇬🇧" },
+  { key: "encycl",     name: "موسوعات ومراجع", icon: "📚" },
+  { key: "language",   name: "لغات وقواعد",    icon: "🔤" },
+  { key: "nature",     name: "طبيعة وبيئة",   icon: "🌿" },
+  { key: "general",    name: "متنوعات",       icon: "📕" }
+];
+
+// ─── تحديد لون الغلاف وأيقونته بناءً على الموضوع ───
+function getCoverInfo(book) {
+  const title = String(book["اسم الكتاب"] || "");
+  const t = title.toLowerCase();
+  const author = String(book["المؤلف"] || "").toLowerCase();
+  const notes = String(book["ملاحظات"] || "").toLowerCase();
+
+  // ─── 1. كتب إنجليزية (يُكتشف بأحرف لاتينية في العنوان) ───
+  // إذا كان العنوان يحتوي على نسبة عالية من الحروف الإنجليزية
+  const englishLetters = (title.match(/[a-zA-Z]/g) || []).length;
+  const arabicLetters  = (title.match(/[\u0600-\u06FF]/g) || []).length;
+  if (englishLetters >= 3 && englishLetters > arabicLetters) {
+    return { class: "english", icon: "🇬🇧" };
+  }
+  if (/(english|british|american|grammar lesson|reader|story book)/.test(t))
+    return { class: "english", icon: "🇬🇧" };
+
+  // ─── 2. قصص أطفال ───
+  if (/(أطفال|طفل|للأطفال|للصغار|الصغار|روضة|كتكوت|أرنوب|دبدوب|عصفور|قط|الفأر|الأرنب|الدب|بطوط|ميكي|قصة قصيرة|قصص الحيوانات|كان يا ما كان|سندريلا|بياض الثلج|الأقزام|سلسلة قصص)/.test(t))
+    return { class: "children", icon: "🧸" };
+
+  // ─── 3. ديني وإسلامي ───
+  if (/(قرآن|قران|الكريم|تفسير|حديث|أحاديث|إسلام|إسلامي|فقه|عقيدة|سيرة|نبوي|دعاء|أذكار|صلاة|أنبياء|الرسول|محمد ﷺ|الصحابة|الصحابي)/.test(t))
+    return { class: "religious", icon: "🕌" };
+
+  // ─── 4. فلسطين ───
+  if (/(فلسطين|القدس|الأقصى|قضية|نكبة|اللاجئين|أسرى|الإنتفاضة|انتفاض|غزة|حيفا|يافا)/.test(t))
+    return { class: "palestine", icon: "🇵🇸" };
+
+  // ─── 5. تاريخ ───
+  if (/(تاريخ|تاريخي|حضارة|عصر|دولة|الخلافة|الفتح|معركة|الحرب|الثورة|الأموي|العباسي|العثماني)/.test(t))
+    return { class: "history", icon: "🏛️" };
+
+  // ─── 6. علوم ───
+  if (/(علم|علوم|علمي|فيزياء|كيمياء|رياضيات|أحياء|بيولوجيا|طب|هندسة|تكنولوجيا|كمبيوتر|حاسوب|فلك|فضاء|اختراع)/.test(t))
+    return { class: "science", icon: "🔬" };
+
+  // ─── 7. موسوعات ───
+  if (/(موسوعة|قاموس|معجم|أطلس)/.test(t))
+    return { class: "encycl", icon: "📚" };
+
+  // ─── 8. أدب وشعر ───
+  if (/(ديوان|شعر|شاعر|قصيدة|أدب|أدبي|نثر|مسرح|بلاغة)/.test(t))
+    return { class: "literature", icon: "✒️" };
+
+  // ─── 9. قصص وروايات ───
+  if (/(رواية|قصة|قصص|حكاية|حكايات|أسطورة|خيال|مغامرات|مغامرة)/.test(t))
+    return { class: "stories", icon: "📖" };
+
+  // ─── 10. طبيعة ───
+  if (/(بيئة|طبيعة|حيوان|نبات|بحر|محيط|غابة|طيور|الحدائق|الزراعة)/.test(t))
+    return { class: "nature", icon: "🌿" };
+
+  // ─── 11. لغة عربية ───
+  if (/(عربي|العربية|نحو|صرف|قواعد|إعراب|اللغة العربية|excel|word|access)/.test(t))
+    return { class: "language", icon: "🔤" };
+
+  // ─── 12. عام ───
+  return { class: "general", icon: "📕" };
+}
+
+// ─── التنقل ───
+function showLogin() {
+  document.getElementById("loginScreen").classList.remove("hidden");
+  setTimeout(() => document.getElementById("adminPwd")?.focus(), 100);
+}
+function hideLogin() {
+  document.getElementById("loginScreen").classList.add("hidden");
+  document.getElementById("adminPwd").value = "";
+  document.getElementById("loginErr").classList.add("hidden");
+}
+function doLogin() {
+  const pw = document.getElementById("adminPwd").value;
+  if (pw === ADMIN_PASS) {
+    isAdmin = true;
+    hideLogin();
+    document.getElementById("studentView").classList.add("hidden");
+    document.getElementById("adminView").classList.remove("hidden");
+    renderAdminBooks(allBooks);
+    updateAdminStats(allBooks);
+    document.getElementById("totalBooksHint").textContent = allBooks.length;
+    toast("✅ مرحباً، المعلمة Wad Refae");
+  } else {
+    document.getElementById("loginErr").classList.remove("hidden");
+    document.getElementById("adminPwd").value = "";
+    document.getElementById("adminPwd").focus();
+  }
+}
+function switchToStudent() {
+  document.getElementById("adminView").classList.add("hidden");
+  document.getElementById("studentView").classList.remove("hidden");
+  toast("👁️ واجهة الطالب");
+}
+function logout() {
+  isAdmin = false;
+  document.getElementById("adminView").classList.add("hidden");
+  document.getElementById("studentView").classList.remove("hidden");
+  toast("تم تسجيل الخروج");
+}
+function switchTab(name) {
+  document.querySelectorAll(".admin-tab").forEach(t =>
+    t.classList.toggle("active", t.dataset.tab === name));
+  document.querySelectorAll(".tab-panel").forEach(p =>
+    p.classList.toggle("active", p.id === `tab-${name}`));
+}
+
+// ─── تحميل الكتب ───
+async function loadBooks() {
+  showStudentState("loading");
+  if (isAdmin) showAdminState("loading");
+  try {
+    const res = await fetch(`${API_URL}?action=getBooks`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    allBooks = data.books || [];
+    renderStudentBooks(allBooks);
+    updateStudentStats(allBooks);
+    if (isAdmin) {
+      renderAdminBooks(allBooks);
+      updateAdminStats(allBooks);
+      document.getElementById("totalBooksHint").textContent = allBooks.length;
+    }
+  } catch (err) {
+    console.error("Load error:", err);
+    showStudentState("error");
+    document.getElementById("errorMsg").textContent =
+      `تعذّر الاتصال: ${err.message}. تأكد من API_URL والنشر بصلاحية "الجميع"`;
+  }
+}
+
+// ─── البحث العام من الصفحة الرئيسية ───
+function globalSearchHandler() {
+  const q = document.getElementById("globalSearch").value.trim();
+
+  // إظهار/إخفاء زر المسح
+  document.getElementById("globalClearBtn").style.display = q ? "flex" : "none";
+
+  if (!q) {
+    // إذا فُرغ البحث، ارجع لعرض التصنيفات
+    if (currentCategory === "_search") {
+      currentCategory = null;
+      document.getElementById("searchToolbar").style.display = "none";
+      document.getElementById("categoryHeader").classList.add("hidden");
+      renderCategories(allBooks);
+    }
+    return;
+  }
+
+  // ضع المستخدم في "وضع البحث" — يبحث في كل الكتب
+  currentCategory = "_search";
+  document.getElementById("searchToolbar").style.display = "flex";
+  document.getElementById("categoryHeader").classList.remove("hidden");
+  document.getElementById("catHeaderIcon").textContent = "🔍";
+  document.getElementById("catHeaderName").textContent = `نتائج البحث: "${q}"`;
+
+  // فلترة الكتب
+  const filtered = applyFilter(allBooks, q.toLowerCase(), "");
+  document.getElementById("catHeaderCount").textContent = `${filtered.length} نتيجة`;
+
+  // عرض النتائج
+  document.getElementById("searchInput").value = q; // مزامنة البحث الداخلي
+  const grid = document.getElementById("booksGrid");
+  if (!filtered.length) {
+    showStudentState("noResults");
+  } else {
+    showStudentState("grid");
+    grid.innerHTML = filtered.map((b, i) => studentCard(b, i)).join("");
+  }
+}
+
+function clearGlobalSearch() {
+  document.getElementById("globalSearch").value = "";
+  document.getElementById("globalClearBtn").style.display = "none";
+  currentCategory = null;
+  document.getElementById("searchToolbar").style.display = "none";
+  document.getElementById("categoryHeader").classList.add("hidden");
+  renderCategories(allBooks);
+  document.getElementById("globalSearch").focus();
+}
+
+// ════════════════════════════════════════════════════
+// واجهة الطالب
+// ════════════════════════════════════════════════════
+
+// عرض التصنيفات (الصفحة الرئيسية)
+function renderStudentBooks(books) {
+  if (currentCategory === null) {
+    renderCategories(books);
+  } else {
+    renderCategoryBooks(books);
+  }
+}
+
+// عرض شبكة التصنيفات
+function renderCategories(books) {
+  showStudentState("categories");
+
+  // حساب عدد الكتب في كل تصنيف
+  const counts = {};
+  CATEGORIES.forEach(c => counts[c.key] = 0);
+  books.forEach(b => {
+    const info = getCoverInfo(b);
+    if (counts[info.class] !== undefined) counts[info.class]++;
+  });
+
+  // إنشاء بطاقات التصنيفات (فقط التي تحتوي كتب)
+  const visibleCats = CATEGORIES.filter(c => counts[c.key] > 0);
+
+  document.getElementById("categoriesGrid").innerHTML = visibleCats.map((cat, i) => {
+    const delay = Math.min(i * 0.05, 0.5);
+    return `
+      <div class="category-card" style="animation-delay:${delay}s" onclick="openCategory('${cat.key}')">
+        <div class="cat-banner ${cat.key}">
+          <span class="cat-icon">${cat.icon}</span>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-count">📚 ${counts[cat.key]} كتاب</div>
+          <div class="cat-arrow">تصفح التصنيف ←</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// فتح تصنيف معين
+function openCategory(key) {
+  currentCategory = key;
+  // إظهار شريط البحث وعنوان التصنيف
+  document.getElementById("searchToolbar").style.display = "flex";
+  document.getElementById("categoryHeader").classList.remove("hidden");
+
+  // تحديث عنوان التصنيف
+  const cat = CATEGORIES.find(c => c.key === key);
+  document.getElementById("catHeaderIcon").textContent = cat.icon;
+  document.getElementById("catHeaderName").textContent = cat.name;
+  const count = allBooks.filter(b => getCoverInfo(b).class === key).length;
+  document.getElementById("catHeaderCount").textContent = `${count} كتاب`;
+
+  // مسح البحث وعرض الكتب
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "";
+  filterBooks();
+
+  // تمرير للأعلى
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// العودة لصفحة التصنيفات
+function backToCategories() {
+  currentCategory = null;
+  document.getElementById("searchToolbar").style.display = "none";
+  document.getElementById("categoryHeader").classList.add("hidden");
+  // مسح البحث العام أيضاً
+  document.getElementById("globalSearch").value = "";
+  document.getElementById("globalClearBtn").style.display = "none";
+  renderCategories(allBooks);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// عرض كتب التصنيف الحالي
+function renderCategoryBooks(books) {
+  // فلترة حسب التصنيف الحالي
+  const categoryBooks = books.filter(b => getCoverInfo(b).class === currentCategory);
+
+  const grid = document.getElementById("booksGrid");
+  if (!categoryBooks.length) { showStudentState("noResults"); return; }
+  showStudentState("grid");
+  grid.innerHTML = categoryBooks.map((b, i) => studentCard(b, i)).join("");
+}
+
+function studentCard(book, idx) {
+  const cover = getCoverInfo(book);
+  const borrowed = book["الحالة"] === "مُعار";
+  const part = book["الجزء"] && book["الجزء"] !== ""
+    ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  const delay = Math.min(idx * 0.02, 0.6);
+  return `
+    <div class="book-card clickable" style="animation-delay:${delay}s" onclick="openBookDetail(${book._row})">
+      <div class="book-cover ${cover.class}">
+        <span class="book-cover-icon">${cover.icon}</span>
+        <span class="book-cover-num">#${esc(book["الرقم المتسلسل"] || "")}</span>
+        <span class="book-cover-status ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "مُعار" : "متوفر"}
+        </span>
+      </div>
+      <div class="book-body">
+        <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+        <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        <div class="book-meta-row">
+          <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+          ${book["رقم التصنيف المكتبي"] ? `<span>🏷️ ${esc(book["رقم التصنيف المكتبي"])}</span>` : '<span></span>'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function filterBooks() {
+  const q  = document.getElementById("searchInput").value.trim().toLowerCase();
+  const st = document.getElementById("statusFilter").value;
+  // فلترة فقط داخل التصنيف الحالي
+  const filtered = applyFilter(allBooks, q, st);
+  renderCategoryBooks(filtered);
+}
+
+function updateStudentStats(books) {
+  document.getElementById("statTotal").textContent     = books.length;
+  document.getElementById("statAvailable").textContent = books.filter(b => b["الحالة"] === "متوفر").length;
+  document.getElementById("statBorrowed").textContent  = books.filter(b => b["الحالة"] === "مُعار").length;
+}
+
+function showStudentState(state) {
+  ["loadingState","errorState","categoriesGrid","booksGrid","noResults"].forEach(id =>
+    document.getElementById(id).classList.add("hidden"));
+  const map = {
+    loading:    "loadingState",
+    error:      "errorState",
+    categories: "categoriesGrid",
+    grid:       "booksGrid",
+    noResults:  "noResults"
+  };
+  document.getElementById(map[state]).classList.remove("hidden");
+}
+
+function openBookDetail(row) {
+  const b = allBooks.find(x => x._row === row);
+  if (!b) return;
+  const cover = getCoverInfo(b);
+  const borrowed = b["الحالة"] === "مُعار";
+  const summary = b["النبذة"] || "لم يتم توليد نبذة لهذا الكتاب بعد";
+
+  document.getElementById("bookModalBody").innerHTML = `
+    <div class="detail-cover ${cover.class}">
+      <span class="detail-cover-icon">${cover.icon}</span>
+    </div>
+    <div class="detail-title">${esc(b["اسم الكتاب"])}</div>
+    <div class="detail-author">✍️ ${esc(b["المؤلف"] || "غير محدد")}</div>
+    <div class="detail-tags">
+      ${b["الجزء"] ? `<span class="detail-tag">جزء ${esc(b["الجزء"])}</span>` : ""}
+      <span class="detail-tag ${borrowed ? "borrowed" : "available"}">
+        ${borrowed ? "🔴 مُعار حالياً" : "✅ متوفر للاستعارة"}
+      </span>
+    </div>
+
+    <div class="detail-summary-label">📝 نبذة عن الكتاب</div>
+    <div class="detail-summary">${esc(summary)}</div>
+
+    <div class="detail-row"><span>الرقم المتسلسل</span><span>${esc(b["الرقم المتسلسل"] || "")}</span></div>
+    ${b["رقم التصنيف المكتبي"] ? `<div class="detail-row"><span>رقم التصنيف المكتبي</span><span>${esc(b["رقم التصنيف المكتبي"])}</span></div>` : ""}
+    <div class="detail-row"><span>رقم صفحة السجل</span><span>${esc(b["رقم صفحة السجل"] || "—")}</span></div>
+    ${b["ملاحظات"] ? `<div class="detail-row"><span>ملاحظات</span><span>${esc(b["ملاحظات"])}</span></div>` : ""}
+  `;
+  document.getElementById("bookModal").classList.remove("hidden");
+}
+function closeBookModal() {
+  document.getElementById("bookModal").classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════
+// واجهة المعلم
+// ════════════════════════════════════════════════════
+function renderAdminBooks(books) {
+  const grid = document.getElementById("adminBooksGrid");
+  if (!books.length) { showAdminState("noResults"); return; }
+  showAdminState("grid");
+  grid.innerHTML = books.map((b, i) => adminCard(b, i)).join("");
+}
+
+function adminCard(book, idx) {
+  const cover = getCoverInfo(book);
+  const borrowed = book["الحالة"] === "مُعار";
+  const part = book["الجزء"] && book["الجزء"] !== ""
+    ? `<span class="part-badge">جزء ${esc(book["الجزء"])}</span>` : "";
+  const delay = Math.min(idx * 0.02, 0.6);
+  return `
+    <div class="book-card" style="animation-delay:${delay}s">
+      <div class="book-cover ${cover.class}">
+        <span class="book-cover-icon">${cover.icon}</span>
+        <span class="book-cover-num">#${esc(book["الرقم المتسلسل"] || "")}</span>
+        <span class="book-cover-status ${borrowed ? "borrowed" : "available"}">
+          ${borrowed ? "مُعار" : "متوفر"}
+        </span>
+      </div>
+      <div class="book-body">
+        <div class="book-title">${esc(book["اسم الكتاب"])} ${part}</div>
+        <div class="book-author">${esc(book["المؤلف"] || "مؤلف غير محدد")}</div>
+        <div class="book-meta-row">
+          <span>📄 سجل ${esc(book["رقم صفحة السجل"] || "—")}</span>
+          ${book["رقم التصنيف المكتبي"] ? `<span>🏷️ ${esc(book["رقم التصنيف المكتبي"])}</span>` : '<span></span>'}
+        </div>
+        ${borrowed ? `<div class="book-borrower">👤 المستعير: <strong>${esc(book["المستعير"] || "")}</strong> — ${esc(book["تاريخ الإعارة"] || "")}</div>` : ""}
+      </div>
+      <div class="book-actions">
+        ${borrowed
+          ? `<button class="btn btn-success btn-flex" onclick="doReturn(${book._row})">↩️ إرجاع</button>`
+          : `<button class="btn btn-success btn-flex" onclick="openBorrow(${book._row})">📤 إعارة</button>`}
+        <button class="btn btn-ghost"  onclick="openEdit(${book._row})">✏️</button>
+        <button class="btn btn-icon"   onclick="askDelete(${book._row})">🗑️</button>
+      </div>
+    </div>
+  `;
+}
+
+function adminFilterBooks() {
+  const q  = document.getElementById("adminSearch").value.trim().toLowerCase();
+  const st = document.getElementById("adminStatusFilter").value;
+  renderAdminBooks(applyFilter(allBooks, q, st));
+}
+
+function updateAdminStats(books) {
+  document.getElementById("aStatTotal").textContent     = books.length;
+  document.getElementById("aStatAvailable").textContent = books.filter(b => b["الحالة"] === "متوفر").length;
+  document.getElementById("aStatBorrowed").textContent  = books.filter(b => b["الحالة"] === "مُعار").length;
+}
+
+function showAdminState(state) {
+  ["adminLoading","adminBooksGrid","adminNoResults"].forEach(id =>
+    document.getElementById(id).classList.add("hidden"));
+  const map = { loading: "adminLoading", grid: "adminBooksGrid", noResults: "adminNoResults" };
+  document.getElementById(map[state]).classList.remove("hidden");
+}
+
+// ─── إضافة كتاب ───
+async function addBook() {
+  const title = document.getElementById("bookTitle").value.trim();
+  if (!title) { showMsg("addMsg", "❌ أدخل اسم الكتاب", "error"); return; }
+  const book = {
+    "اسم الكتاب":          title,
+    "المؤلف":              document.getElementById("bookAuthor").value.trim(),
+    "الجزء":               document.getElementById("bookPart").value.trim(),
+    "رقم التصنيف المكتبي":  document.getElementById("bookClass").value.trim(),
+    "رقم صفحة السجل":      document.getElementById("bookPage").value.trim(),
+    "ملاحظات":             document.getElementById("bookNotes").value.trim()
+  };
+  try {
+    const res = await apiPost({ action: "addBook", password: ADMIN_PASS, book });
+    if (res.error) throw new Error(res.error);
+    showMsg("addMsg", "✅ " + res.message + " (مع نبذة تلقائية)", "success");
+    ["bookTitle","bookAuthor","bookPart","bookClass","bookPage","bookNotes"]
+      .forEach(id => document.getElementById(id).value = "");
+    await loadBooks();
+  } catch (e) {
+    showMsg("addMsg", "❌ " + e.message, "error");
+  }
+}
+
+// ─── توليد نبذات بـ AI الحقيقي (على دفعات) ───
+async function generateAllSummaries() {
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0;display:inline-block;vertical-align:middle"></div> جارٍ التوليد...';
+
+  let totalProcessed = 0;
+  let totalSkipped = 0;
+  let nextRow = 2;
+  const BATCH_SIZE = 10;        // دفعات أصغر للسرعة وتجنب timeout
+  const totalBooks = allBooks.length;
+  const expectedBatches = Math.ceil((totalBooks + 1) / BATCH_SIZE);
+
+  showMsg("genMsg", "🤖 جارٍ الاتصال بـ AI...", "success");
+
+  try {
+    let safety = 0;
+    while (safety < 300) { // حد آمن جداً
+      safety++;
+
+      const progress = Math.min(100, Math.round((nextRow / Math.max(totalBooks + 1, 1)) * 100));
+      showMsg("genMsg",
+        `🤖 جارٍ التوليد... <strong>${totalProcessed}</strong> كتاب جاهز • السطر ${nextRow} من ${totalBooks + 1} • <strong>${progress}%</strong>`,
+        "success");
+
+      // محاولة الدفعة مع retry حتى 3 مرات
+      let res = null;
+      let lastErr = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          res = await apiPostWithTimeout({
+            action: "generateSummariesBatch",
+            password: ADMIN_PASS,
+            startRow: nextRow,
+            batchSize: BATCH_SIZE
+          }, 90000); // 90 ثانية مهلة
+          if (res.error) throw new Error(res.error);
+          break;
+        } catch (e) {
+          lastErr = e;
+          console.warn(`Batch ${safety} attempt ${attempt} failed:`, e.message);
+          if (attempt < 3) {
+            showMsg("genMsg",
+              `⚠️ فشل الاتصال (محاولة ${attempt}/3) — جارٍ إعادة المحاولة...`,
+              "error");
+            await new Promise(r => setTimeout(r, 2000)); // انتظار 2 ثانية
+          }
+        }
+      }
+
+      if (!res) {
+        throw new Error(`فشل بعد 3 محاولات: ${lastErr?.message || "غير معروف"}`);
+      }
+
+      totalProcessed += res.processed || 0;
+      totalSkipped   += res.skipped || 0;
+
+      console.log(`Batch ${safety}: processed=${res.processed}, skipped=${res.skipped}, nextRow=${res.nextRow}, done=${res.done}`);
+
+      if (res.done || !res.nextRow) {
+        showMsg("genMsg",
+          `✅ تم بنجاح! تمت معالجة <strong>${totalProcessed}</strong> كتاب (تخطي ${totalSkipped})`,
+          "success");
+        break;
+      }
+
+      nextRow = res.nextRow;
+      await new Promise(r => setTimeout(r, 200));
+    }
+
+    if (safety >= 300) {
+      showMsg("genMsg",
+        `⚠️ توقفنا عند الحد الآمن. تم توليد ${totalProcessed} كتاب. اضغطي مرة أخرى لإكمال الباقي.`,
+        "error");
+    }
+
+    await loadBooks();
+  } catch (e) {
+    console.error("Generate error:", e);
+    showMsg("genMsg",
+      `❌ ${e.message}<br><br>تم توليد <strong>${totalProcessed}</strong> كتاب قبل التوقف. اضغطي الزر مرة أخرى لإكمال الباقي.`,
+      "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🤖 ابدأ توليد النبذات بـ AI';
+  }
+}
+
+// ─── إرسال طلب POST مع مهلة زمنية محدّدة ───
+async function apiPostWithTimeout(body, timeoutMs = 60000) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(body),
+      redirect: "follow",
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  } catch (e) {
+    clearTimeout(timeoutId);
+    if (e.name === 'AbortError') {
+      throw new Error(`Timeout بعد ${timeoutMs/1000} ثانية`);
+    }
+    throw e;
+  }
+}
+
+// ─── اختبار سريع لـ AI ───
+async function testAI() {
+  const btn = document.getElementById("testAIBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "جارٍ الاختبار..."; }
+  try {
+    const res = await fetch(`${API_URL}?action=testAI`);
+    const data = await res.json();
+    if (data.success) {
+      showMsg("genMsg",
+        `✅ AI يعمل! المزود: ${data.provider}<br><br>📝 نبذة تجريبية:<br>"${data.sample}"`,
+        "success");
+    } else {
+      showMsg("genMsg",
+        `❌ ${data.error || "فشل الاختبار"}<br><br>💡 ${data.hint || "تأكدي من إعدادات API key"}`,
+        "error");
+    }
+  } catch (e) {
+    showMsg("genMsg", `❌ ${e.message}`, "error");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "🧪 اختبار AI أولاً"; }
+  }
+}
+
+// ─── استيراد ملف ───
+function handleFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  document.getElementById("fileInfo").innerHTML = `📄 <strong>${esc(file.name)}</strong> — جارٍ القراءة...`;
+  document.getElementById("fileInfo").classList.remove("hidden");
+  document.getElementById("filePreview").innerHTML = "";
+  document.getElementById("importFileBtn").classList.add("hidden");
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, { type: "array" });
+
+      let rows = [];
+      for (const name of wb.SheetNames) {
+        const ws = wb.Sheets[name];
+        for (const headerRow of [0, 5, 6]) {
+          const tmp = XLSX.utils.sheet_to_json(ws, { defval: "", range: headerRow });
+          if (tmp.length > 0 && tmp.some(r => r["اسم الكتاب"] || r["اسم الكتاب "] || r["title"] || r["Title"])) {
+            rows = tmp;
+            break;
+          }
+        }
+        if (rows.length) break;
+      }
+
+      if (!rows.length) {
+        document.getElementById("fileInfo").innerHTML =
+          `⚠️ لم نجد كتباً صالحة. تأكد من وجود عمود "اسم الكتاب"`;
+        return;
+      }
+
+      parsedFileBooks = rows.map(r => ({
+        "اسم الكتاب":         (r["اسم الكتاب"] || r["اسم الكتاب "] || r["title"] || r["Title"] || "").toString().trim(),
+        "المؤلف":             (r["المؤلف"]     || r["author"]      || r["Author"] || "").toString().trim(),
+        "الجزء":              (r["الجزء"]      || r["part"]        || "").toString().trim(),
+        "رقم التصنيف المكتبي": (r["رقم التصنيف المكتبي"] || r["التصنيف"] || r["category"] || "").toString().trim(),
+        "رقم صفحة السجل":     (r["رقم صفحة السجل"] || r["page"]    || "").toString().trim(),
+        "ملاحظات":            (r["ملاحظات"]    || r["notes"]       || "").toString().trim()
+      })).filter(b => b["اسم الكتاب"] && b["اسم الكتاب"] !== "nan");
+
+      if (!parsedFileBooks.length) {
+        document.getElementById("fileInfo").innerHTML = `⚠️ لم نجد كتباً صالحة`;
+        return;
+      }
+
+      document.getElementById("fileInfo").innerHTML =
+        `✅ <strong>${esc(file.name)}</strong> — <strong>${parsedFileBooks.length}</strong> كتاب جاهز للاستيراد`;
+
+      const preview = parsedFileBooks.slice(0, 5);
+      document.getElementById("filePreview").innerHTML = `
+        <table class="preview-table">
+          <thead><tr><th>#</th><th>اسم الكتاب</th><th>المؤلف</th><th>الجزء</th><th>سجل</th></tr></thead>
+          <tbody>
+            ${preview.map((b, i) => `
+              <tr>
+                <td>${i+1}</td>
+                <td>${esc(b["اسم الكتاب"])}</td>
+                <td>${esc(b["المؤلف"]) || "—"}</td>
+                <td>${esc(b["الجزء"]) || "—"}</td>
+                <td>${esc(b["رقم صفحة السجل"]) || "—"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+        ${parsedFileBooks.length > 5
+          ? `<p style="color:var(--text-soft);font-size:.85rem;text-align:center;margin-top:8px">
+               ... و ${parsedFileBooks.length - 5} كتاب آخر</p>`
+          : ""}
+      `;
+      document.getElementById("importFileBtn").classList.remove("hidden");
+
+    } catch (err) {
+      document.getElementById("fileInfo").innerHTML = `❌ خطأ: ${err.message}`;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+async function importFromFile() {
+  if (!parsedFileBooks.length) return;
+  showMsg("importMsg", `⏳ جارٍ استيراد ${parsedFileBooks.length} كتاب...`, "success");
+  try {
+    const BATCH = 100;
+    let totalImported = 0;
+    for (let i = 0; i < parsedFileBooks.length; i += BATCH) {
+      const batch = parsedFileBooks.slice(i, i + BATCH);
+      const res = await apiPost({ action: "importBooks", password: ADMIN_PASS, books: batch });
+      if (res.error) throw new Error(res.error);
+      totalImported += batch.length;
+      showMsg("importMsg", `⏳ تم استيراد ${totalImported} من ${parsedFileBooks.length}...`, "success");
+    }
+    showMsg("importMsg", `✅ تم استيراد ${totalImported} كتاب للجرد مع نبذات تلقائية`, "success");
+    document.getElementById("fileInput").value = "";
+    document.getElementById("fileInfo").classList.add("hidden");
+    document.getElementById("filePreview").innerHTML = "";
+    document.getElementById("importFileBtn").classList.add("hidden");
+    parsedFileBooks = [];
+    await loadBooks();
+  } catch (e) {
+    showMsg("importMsg", "❌ " + e.message, "error");
+  }
+}
+
+// ─── إعارة ───
+function openBorrow(row) {
+  const b = allBooks.find(x => x._row === row);
+  document.getElementById("adminModalBody").innerHTML = `
+    <h3>📤 تسجيل إعارة</h3>
+    <p style="color:var(--text-soft);margin:6px 0 16px">الكتاب: <strong>${esc(b["اسم الكتاب"])}</strong></p>
+    <div class="form-group">
+      <label>اسم المستعير</label>
+      <input type="text" id="borrowerName" placeholder="اسم الطالب أو المعلم...">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-success" onclick="confirmBorrow(${row})">✅ تأكيد الإعارة</button>
+      <button class="btn btn-ghost" onclick="closeAdminModal()">إلغاء</button>
+    </div>
+  `;
+  document.getElementById("adminModal").classList.remove("hidden");
+  setTimeout(() => document.getElementById("borrowerName")?.focus(), 100);
+}
+
+async function confirmBorrow(row) {
+  const borrower = document.getElementById("borrowerName").value.trim();
+  if (!borrower) { toast("❌ أدخل اسم المستعير", "error"); return; }
+  try {
+    const res = await apiPost({ action: "borrow", password: ADMIN_PASS, row, borrower });
+    if (res.error) throw new Error(res.error);
+    closeAdminModal();
+    toast("✅ " + res.message);
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+async function doReturn(row) {
+  if (!confirm("تسجيل إرجاع هذا الكتاب؟")) return;
+  try {
+    const res = await apiPost({ action: "returnBook", password: ADMIN_PASS, row });
+    if (res.error) throw new Error(res.error);
+    toast("✅ " + res.message);
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+// ─── تعديل ───
+function openEdit(row) {
+  const b = allBooks.find(x => x._row === row);
+  if (!b) return;
+  editingRow = row;
+  document.getElementById("adminModalBody").innerHTML = `
+    <h3>✏️ تعديل الكتاب</h3>
+    <div class="form-row" style="margin-top:14px">
+      <div class="form-group full">
+        <label>اسم الكتاب *</label>
+        <input id="editTitle" type="text" value="${esc(b["اسم الكتاب"])}">
+      </div>
+      <div class="form-group">
+        <label>المؤلف</label>
+        <input id="editAuthor" type="text" value="${esc(b["المؤلف"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>الجزء</label>
+        <input id="editPart" type="text" value="${esc(b["الجزء"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>رقم التصنيف المكتبي</label>
+        <input id="editClass" type="text" value="${esc(b["رقم التصنيف المكتبي"] || "")}">
+      </div>
+      <div class="form-group">
+        <label>رقم صفحة السجل</label>
+        <input id="editPage" type="text" value="${esc(b["رقم صفحة السجل"] || "")}">
+      </div>
+      <div class="form-group full">
+        <label>النبذة (اتركها فارغة للتوليد التلقائي)</label>
+        <textarea id="editSummary" rows="3">${esc(b["النبذة"] || "")}</textarea>
+      </div>
+      <div class="form-group full">
+        <label>ملاحظات</label>
+        <textarea id="editNotes">${esc(b["ملاحظات"] || "")}</textarea>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="saveEdit()">💾 حفظ التعديلات</button>
+  `;
+  document.getElementById("adminModal").classList.remove("hidden");
+}
+
+async function saveEdit() {
+  const book = {
+    "اسم الكتاب":         document.getElementById("editTitle").value.trim(),
+    "المؤلف":             document.getElementById("editAuthor").value.trim(),
+    "الجزء":              document.getElementById("editPart").value.trim(),
+    "رقم التصنيف المكتبي": document.getElementById("editClass").value.trim(),
+    "رقم صفحة السجل":     document.getElementById("editPage").value.trim(),
+    "النبذة":             document.getElementById("editSummary").value.trim(),
+    "ملاحظات":            document.getElementById("editNotes").value.trim()
+  };
+  if (!book["اسم الكتاب"]) { toast("❌ اسم الكتاب مطلوب", "error"); return; }
+  try {
+    const res = await apiPost({ action: "updateBook", password: ADMIN_PASS, row: editingRow, book });
+    if (res.error) throw new Error(res.error);
+    closeAdminModal();
+    toast("✅ تم التعديل");
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); }
+}
+
+// ─── حذف ───
+function askDelete(row) {
+  pendingDeleteRow = row;
+  document.getElementById("deleteModal").classList.remove("hidden");
+}
+function closeDeleteModal() {
+  pendingDeleteRow = null;
+  document.getElementById("deleteModal").classList.add("hidden");
+}
+async function confirmDelete() {
+  if (!pendingDeleteRow) return;
+  try {
+    const res = await apiPost({ action: "deleteBook", password: ADMIN_PASS, row: pendingDeleteRow });
+    if (res.error) throw new Error(res.error);
+    closeDeleteModal();
+    toast("✅ تم الحذف");
+    await loadBooks();
+  } catch (e) { toast("❌ " + e.message, "error"); closeDeleteModal(); }
+}
+function closeAdminModal() {
+  document.getElementById("adminModal").classList.add("hidden");
+}
+
+// ════════════════════════════════════════════════════
+// مساعدات
+// ════════════════════════════════════════════════════
+function applyFilter(books, q, st) {
+  return books.filter(b => {
+    const matchQ = !q ||
+      String(b["اسم الكتاب"]||"").toLowerCase().includes(q) ||
+      String(b["المؤلف"]||"").toLowerCase().includes(q) ||
+      String(b["رقم التصنيف المكتبي"]||"").toLowerCase().includes(q) ||
+      String(b["الرقم المتسلسل"]||"").toLowerCase().includes(q);
+    const matchSt = !st || b["الحالة"] === st;
+    return matchQ && matchSt;
+  });
+}
+
+async function apiPost(body) {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(body),
+    redirect: "follow"
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function toast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = `toast ${type}`;
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => { t.className = "toast hidden"; }, 3500);
+}
+
+function showMsg(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `msg ${type}`;
+  el.classList.remove("hidden");
+  setTimeout(() => el.classList.add("hidden"), 5000);
+}
+
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadBooks();
+  const drop = document.getElementById("fileDropZone");
+  if (drop) {
+    drop.addEventListener("dragover",  e => { e.preventDefault(); drop.classList.add("drag"); });
+    drop.addEventListener("dragleave", () => drop.classList.remove("drag"));
+    drop.addEventListener("drop", e => {
+      e.preventDefault();
+      drop.classList.remove("drag");
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        document.getElementById("fileInput").files = e.dataTransfer.files;
+        handleFile({ target: { files: [file] } });
+      }
+    });
+  }
+});
+
+</script>
+</body>
+</html>
