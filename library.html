@@ -2392,18 +2392,20 @@ async function generateAllSummaries() {
   let totalProcessed = 0;
   let totalSkipped = 0;
   let nextRow = 2;
-  const BATCH_SIZE = 20; // 20 كتاب لكل دفعة
+  const BATCH_SIZE = 20;
+  const totalBooks = allBooks.length;
 
   showMsg("genMsg", "🤖 جارٍ الاتصال بـ AI...", "success");
 
   try {
-    let safety = 0; // حماية من loop لانهائي
-    while (safety < 100) {
+    let safety = 0;
+    // حد آمن أعلى — مع 1000 كتاب و 20 لكل دفعة نحتاج 50 دفعة، نضع 200 احتياطاً
+    while (safety < 200) {
       safety++;
 
-      // تحديث الواجهة
+      const progress = Math.round((nextRow / Math.max(totalBooks, nextRow)) * 100);
       showMsg("genMsg",
-        `🤖 جارٍ التوليد... تمت معالجة ${totalProcessed} كتاب حتى الآن (دفعة ${safety})`,
+        `🤖 جارٍ التوليد... ${totalProcessed} كتاب جاهز • وصلت للسطر ${nextRow} من ${totalBooks + 1} (${progress}%)`,
         "success");
 
       const res = await apiPost({
@@ -2418,22 +2420,34 @@ async function generateAllSummaries() {
       totalProcessed += res.processed || 0;
       totalSkipped   += res.skipped || 0;
 
+      // طباعة تشخيصية في console
+      console.log(`Batch ${safety}: processed=${res.processed}, skipped=${res.skipped}, nextRow=${res.nextRow}, done=${res.done}, totalRows=${res.totalRows}`);
+
       if (res.done || !res.nextRow) {
         showMsg("genMsg",
-          `✅ تم! تمت معالجة ${totalProcessed} كتاب (تخطي ${totalSkipped} كتاب لها نبذات)`,
+          `✅ تم! تمت معالجة ${totalProcessed} كتاب (تخطي ${totalSkipped})`,
           "success");
         break;
       }
+
+      // ✅ المهم: نحدّث nextRow حتى لو الدفعة كلها كانت skipped
       nextRow = res.nextRow;
 
       // فاصل صغير بين الدفعات
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise(r => setTimeout(r, 300));
+    }
+
+    if (safety >= 200) {
+      showMsg("genMsg",
+        `⚠️ توقفنا عند الحد الآمن. تم توليد ${totalProcessed} كتاب. اضغطي مرة أخرى لإكمال الباقي.`,
+        "error");
     }
 
     await loadBooks();
   } catch (e) {
+    console.error("Generate error:", e);
     showMsg("genMsg",
-      `❌ ${e.message}<br><br>تم توليد ${totalProcessed} كتاب قبل التوقف. يمكنك إعادة الضغط لإكمال الباقي.`,
+      `❌ ${e.message}<br><br>تم توليد ${totalProcessed} كتاب قبل التوقف. اضغطي الزر مرة أخرى لإكمال الباقي.`,
       "error");
   } finally {
     btn.disabled = false;
