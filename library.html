@@ -2392,7 +2392,7 @@ async function generateAllSummaries() {
   let totalProcessed = 0;
   let totalSkipped = 0;
   let nextRow = 2;
-  const BATCH_SIZE = 100;        // دفعات أصغر للسرعة وتجنب timeout
+  const BATCH_SIZE = 10;        // دفعات أصغر للسرعة وتجنب timeout
   const totalBooks = allBooks.length;
   const expectedBatches = Math.ceil((totalBooks + 1) / BATCH_SIZE);
 
