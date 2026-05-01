@@ -1287,6 +1287,184 @@ input, select, textarea { font-family: var(--font); }
   .books-grid { grid-template-columns: 1fr; }
 }
 
+/* ════════════════════════════════════════════════════
+   بطاقات التصنيفات (الصفحة الرئيسية)
+════════════════════════════════════════════════════ */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+.category-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
+  animation: cardFadeUp 0.4s ease-out backwards;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.category-card:hover .cat-banner {
+  transform: scale(1.05);
+}
+
+.category-card:hover .cat-arrow {
+  transform: translateX(-6px);
+  opacity: 1;
+}
+
+/* البانر الملون لكل تصنيف */
+.cat-banner {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s ease;
+}
+
+.cat-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 14px, rgba(255,255,255,0.07) 14px, rgba(255,255,255,0.07) 28px);
+}
+
+.cat-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  right: -20px;
+  height: 50px;
+  background: var(--card);
+  border-radius: 50% 50% 0 0;
+}
+
+/* ألوان البانرات حسب التصنيف */
+.cat-banner.religious  { background: linear-gradient(135deg, #1e6091, #0d4d70); }
+.cat-banner.history    { background: linear-gradient(135deg, #8b4513, #654321); }
+.cat-banner.science    { background: linear-gradient(135deg, #047857, #065f46); }
+.cat-banner.literature { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+.cat-banner.stories    { background: linear-gradient(135deg, #c2410c, #9a3412); }
+.cat-banner.language   { background: linear-gradient(135deg, #db2777, #9d174d); }
+.cat-banner.encycl     { background: linear-gradient(135deg, #0891b2, #155e75); }
+.cat-banner.palestine  { background: linear-gradient(135deg, #b91c1c, #7f1d1d); }
+.cat-banner.nature     { background: linear-gradient(135deg, #15803d, #14532d); }
+.cat-banner.general    { background: linear-gradient(135deg, #4b5563, #374151); }
+
+.cat-icon {
+  font-size: 4rem;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
+  position: relative;
+  z-index: 1;
+  animation: subtleFloat 3.5s ease-in-out infinite;
+}
+
+/* محتوى البطاقة */
+.cat-body {
+  padding: 18px 20px 20px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin-top: -10px;
+  background: var(--card);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.cat-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cat-arrow {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+/* ════════════════════════════════════════════════════
+   عنوان التصنيف (أعلى صفحة الكتب)
+════════════════════════════════════════════════════ */
+.category-header {
+  background: linear-gradient(135deg, var(--card), var(--bg));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+  border-right: 4px solid var(--primary);
+  animation: fadeInUp 0.3s ease;
+}
+
+.cat-header-icon {
+  font-size: 2.4rem;
+  background: var(--primary-light);
+  width: 64px; height: 64px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cat-header-text h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.cat-header-text p {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+}
+
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
@@ -1356,10 +1534,12 @@ input, select, textarea { font-family: var(--font); }
       </div>
     </div>
 
-    <div class="toolbar">
+    <!-- شريط البحث (يظهر فقط داخل التصنيف) -->
+    <div class="toolbar" id="searchToolbar" style="display:none">
+      <button class="btn btn-ghost" onclick="backToCategories()">← العودة للتصنيفات</button>
       <div class="search-input">
         <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="ابحث باسم الكتاب أو المؤلف أو رقم التصنيف..." oninput="filterBooks()">
+        <input type="text" id="searchInput" placeholder="ابحث في هذا التصنيف..." oninput="filterBooks()">
       </div>
       <select id="statusFilter" onchange="filterBooks()">
         <option value="">📊 كل الحالات</option>
@@ -1368,6 +1548,16 @@ input, select, textarea { font-family: var(--font); }
       </select>
     </div>
 
+    <!-- عنوان التصنيف الحالي (يظهر فقط داخل التصنيف) -->
+    <div class="category-header hidden" id="categoryHeader">
+      <span class="cat-header-icon" id="catHeaderIcon">📚</span>
+      <div class="cat-header-text">
+        <h2 id="catHeaderName">التصنيف</h2>
+        <p id="catHeaderCount">0 كتاب</p>
+      </div>
+    </div>
+
+    <!-- حالات التحميل -->
     <div id="loadingState" class="state">
       <div class="spinner"></div>
       <div class="state-text">جارٍ تحميل الجرد...</div>
@@ -1377,7 +1567,13 @@ input, select, textarea { font-family: var(--font); }
       <div class="state-text" id="errorMsg">تعذّر الاتصال بالخادم</div>
       <button class="btn btn-primary" onclick="loadBooks()">🔄 إعادة المحاولة</button>
     </div>
+
+    <!-- شبكة التصنيفات (الصفحة الرئيسية) -->
+    <div id="categoriesGrid" class="categories-grid hidden"></div>
+
+    <!-- شبكة الكتب (داخل تصنيف) -->
     <div id="booksGrid" class="books-grid hidden"></div>
+
     <div id="noResults" class="state hidden">
       <span class="state-icon">📭</span>
       <div class="state-text">لا توجد كتب تطابق بحثك</div>
@@ -1622,7 +1818,7 @@ input, select, textarea { font-family: var(--font); }
 // app.js — مع نبذات ذكية وأغلفة ملونة
 // ════════════════════════════════════════════════════
 
-const API_URL    = "https://script.google.com/macros/s/AKfycbxkzEG-tYM5TpaZ7Uox6W8SBVReFZmNllv5_KWd9a4UlLO2un3uac1_pxdp5EnQcInM/exec";
+const API_URL    = "https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec";
 const ADMIN_PASS = "Surda123surda";
 
 let allBooks         = [];
@@ -1630,6 +1826,21 @@ let isAdmin          = false;
 let pendingDeleteRow = null;
 let editingRow       = null;
 let parsedFileBooks  = [];
+let currentCategory  = null; // التصنيف المعروض حالياً (null = صفحة التصنيفات)
+
+// ─── قائمة التصنيفات الرئيسية ───
+const CATEGORIES = [
+  { key: "religious",  name: "ديني وإسلامي",  icon: "🕌" },
+  { key: "palestine",  name: "فلسطين والقضية", icon: "🇵🇸" },
+  { key: "history",    name: "تاريخ وحضارة",   icon: "🏛️" },
+  { key: "science",    name: "علوم ومعارف",    icon: "🔬" },
+  { key: "literature", name: "أدب وشعر",      icon: "✒️" },
+  { key: "stories",    name: "قصص وروايات",    icon: "📖" },
+  { key: "encycl",     name: "موسوعات ومراجع", icon: "📚" },
+  { key: "language",   name: "لغات وقواعد",    icon: "🔤" },
+  { key: "nature",     name: "طبيعة وبيئة",   icon: "🌿" },
+  { key: "general",    name: "متنوعات",       icon: "📕" }
+];
 
 // ─── تحديد لون الغلاف وأيقونته بناءً على الموضوع ───
 function getCoverInfo(book) {
@@ -1738,12 +1949,89 @@ async function loadBooks() {
 // ════════════════════════════════════════════════════
 // واجهة الطالب
 // ════════════════════════════════════════════════════
+
+// عرض التصنيفات (الصفحة الرئيسية)
 function renderStudentBooks(books) {
+  if (currentCategory === null) {
+    renderCategories(books);
+  } else {
+    renderCategoryBooks(books);
+  }
+}
+
+// عرض شبكة التصنيفات
+function renderCategories(books) {
+  showStudentState("categories");
+
+  // حساب عدد الكتب في كل تصنيف
+  const counts = {};
+  CATEGORIES.forEach(c => counts[c.key] = 0);
+  books.forEach(b => {
+    const info = getCoverInfo(b);
+    if (counts[info.class] !== undefined) counts[info.class]++;
+  });
+
+  // إنشاء بطاقات التصنيفات (فقط التي تحتوي كتب)
+  const visibleCats = CATEGORIES.filter(c => counts[c.key] > 0);
+
+  document.getElementById("categoriesGrid").innerHTML = visibleCats.map((cat, i) => {
+    const delay = Math.min(i * 0.05, 0.5);
+    return `
+      <div class="category-card" style="animation-delay:${delay}s" onclick="openCategory('${cat.key}')">
+        <div class="cat-banner ${cat.key}">
+          <span class="cat-icon">${cat.icon}</span>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-count">📚 ${counts[cat.key]} كتاب</div>
+          <div class="cat-arrow">تصفح التصنيف ←</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// فتح تصنيف معين
+function openCategory(key) {
+  currentCategory = key;
+  // إظهار شريط البحث وعنوان التصنيف
+  document.getElementById("searchToolbar").style.display = "flex";
+  document.getElementById("categoryHeader").classList.remove("hidden");
+
+  // تحديث عنوان التصنيف
+  const cat = CATEGORIES.find(c => c.key === key);
+  document.getElementById("catHeaderIcon").textContent = cat.icon;
+  document.getElementById("catHeaderName").textContent = cat.name;
+  const count = allBooks.filter(b => getCoverInfo(b).class === key).length;
+  document.getElementById("catHeaderCount").textContent = `${count} كتاب`;
+
+  // مسح البحث وعرض الكتب
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "";
+  filterBooks();
+
+  // تمرير للأعلى
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// العودة لصفحة التصنيفات
+function backToCategories() {
+  currentCategory = null;
+  document.getElementById("searchToolbar").style.display = "none";
+  document.getElementById("categoryHeader").classList.add("hidden");
+  renderCategories(allBooks);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// عرض كتب التصنيف الحالي
+function renderCategoryBooks(books) {
+  // فلترة حسب التصنيف الحالي
+  const categoryBooks = books.filter(b => getCoverInfo(b).class === currentCategory);
+
   const grid = document.getElementById("booksGrid");
-  if (!books.length) { showStudentState("noResults"); return; }
+  if (!categoryBooks.length) { showStudentState("noResults"); return; }
   showStudentState("grid");
-  // الترقيم بترتيب الإضافة (بطء بسيط لكل بطاقة)
-  grid.innerHTML = books.map((b, i) => studentCard(b, i)).join("");
+  grid.innerHTML = categoryBooks.map((b, i) => studentCard(b, i)).join("");
 }
 
 function studentCard(book, idx) {
@@ -1776,7 +2064,9 @@ function studentCard(book, idx) {
 function filterBooks() {
   const q  = document.getElementById("searchInput").value.trim().toLowerCase();
   const st = document.getElementById("statusFilter").value;
-  renderStudentBooks(applyFilter(allBooks, q, st));
+  // فلترة فقط داخل التصنيف الحالي
+  const filtered = applyFilter(allBooks, q, st);
+  renderCategoryBooks(filtered);
 }
 
 function updateStudentStats(books) {
@@ -1786,9 +2076,15 @@ function updateStudentStats(books) {
 }
 
 function showStudentState(state) {
-  ["loadingState","errorState","booksGrid","noResults"].forEach(id =>
+  ["loadingState","errorState","categoriesGrid","booksGrid","noResults"].forEach(id =>
     document.getElementById(id).classList.add("hidden"));
-  const map = { loading: "loadingState", error: "errorState", grid: "booksGrid", noResults: "noResults" };
+  const map = {
+    loading:    "loadingState",
+    error:      "errorState",
+    categories: "categoriesGrid",
+    grid:       "booksGrid",
+    noResults:  "noResults"
+  };
   document.getElementById(map[state]).classList.remove("hidden");
 }
 
