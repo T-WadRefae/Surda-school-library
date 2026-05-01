@@ -16,12 +16,14 @@ let currentCategory  = null; // التصنيف المعروض حالياً (null
 
 // ─── قائمة التصنيفات الرئيسية ───
 const CATEGORIES = [
-  { key: "religious",  name: "ديني وإسلامي",  icon: "🕌" },
+  { key: "religious",  name: "ديني وإسلامي",   icon: "🕌" },
   { key: "palestine",  name: "فلسطين والقضية", icon: "🇵🇸" },
   { key: "history",    name: "تاريخ وحضارة",   icon: "🏛️" },
   { key: "science",    name: "علوم ومعارف",    icon: "🔬" },
-  { key: "literature", name: "أدب وشعر",      icon: "✒️" },
+  { key: "literature", name: "أدب وشعر",       icon: "✒️" },
   { key: "stories",    name: "قصص وروايات",    icon: "📖" },
+  { key: "children",   name: "قصص أطفال",      icon: "🧸" },
+  { key: "english",    name: "كتب باللغة الإنجليزية", icon: "🇬🇧" },
   { key: "encycl",     name: "موسوعات ومراجع", icon: "📚" },
   { key: "language",   name: "لغات وقواعد",    icon: "🔤" },
   { key: "nature",     name: "طبيعة وبيئة",   icon: "🌿" },
@@ -30,35 +32,62 @@ const CATEGORIES = [
 
 // ─── تحديد لون الغلاف وأيقونته بناءً على الموضوع ───
 function getCoverInfo(book) {
-  const t = String(book["اسم الكتاب"] || "").toLowerCase();
+  const title = String(book["اسم الكتاب"] || "");
+  const t = title.toLowerCase();
+  const author = String(book["المؤلف"] || "").toLowerCase();
+  const notes = String(book["ملاحظات"] || "").toLowerCase();
 
-  if (/(قرآن|قران|الكريم|تفسير|حديث|أحاديث|إسلام|إسلامي|فقه|عقيدة|سيرة|نبوي|دعاء|أذكار|صلاة|أنبياء|الرسول|محمد ﷺ)/.test(t))
+  // ─── 1. كتب إنجليزية (يُكتشف بأحرف لاتينية في العنوان) ───
+  // إذا كان العنوان يحتوي على نسبة عالية من الحروف الإنجليزية
+  const englishLetters = (title.match(/[a-zA-Z]/g) || []).length;
+  const arabicLetters  = (title.match(/[\u0600-\u06FF]/g) || []).length;
+  if (englishLetters >= 3 && englishLetters > arabicLetters) {
+    return { class: "english", icon: "🇬🇧" };
+  }
+  if (/(english|british|american|grammar lesson|reader|story book)/.test(t))
+    return { class: "english", icon: "🇬🇧" };
+
+  // ─── 2. قصص أطفال ───
+  if (/(أطفال|طفل|للأطفال|للصغار|الصغار|روضة|كتكوت|أرنوب|دبدوب|عصفور|قط|الفأر|الأرنب|الدب|بطوط|ميكي|قصة قصيرة|قصص الحيوانات|كان يا ما كان|سندريلا|بياض الثلج|الأقزام|سلسلة قصص)/.test(t))
+    return { class: "children", icon: "🧸" };
+
+  // ─── 3. ديني وإسلامي ───
+  if (/(قرآن|قران|الكريم|تفسير|حديث|أحاديث|إسلام|إسلامي|فقه|عقيدة|سيرة|نبوي|دعاء|أذكار|صلاة|أنبياء|الرسول|محمد ﷺ|الصحابة|الصحابي)/.test(t))
     return { class: "religious", icon: "🕌" };
 
-  if (/(فلسطين|القدس|الأقصى|قضية|نكبة|اللاجئين|أسرى|الإنتفاضة)/.test(t))
+  // ─── 4. فلسطين ───
+  if (/(فلسطين|القدس|الأقصى|قضية|نكبة|اللاجئين|أسرى|الإنتفاضة|انتفاض|غزة|حيفا|يافا)/.test(t))
     return { class: "palestine", icon: "🇵🇸" };
 
-  if (/(تاريخ|تاريخي|حضارة|عصر|دولة|الخلافة|الفتح|معركة|الحرب|الثورة)/.test(t))
+  // ─── 5. تاريخ ───
+  if (/(تاريخ|تاريخي|حضارة|عصر|دولة|الخلافة|الفتح|معركة|الحرب|الثورة|الأموي|العباسي|العثماني)/.test(t))
     return { class: "history", icon: "🏛️" };
 
-  if (/(علم|علوم|علمي|فيزياء|كيمياء|رياضيات|أحياء|بيولوجيا|طب|هندسة|تكنولوجيا|كمبيوتر|حاسوب|فلك|فضاء)/.test(t))
+  // ─── 6. علوم ───
+  if (/(علم|علوم|علمي|فيزياء|كيمياء|رياضيات|أحياء|بيولوجيا|طب|هندسة|تكنولوجيا|كمبيوتر|حاسوب|فلك|فضاء|اختراع)/.test(t))
     return { class: "science", icon: "🔬" };
 
-  if (/(موسوعة|قاموس|معجم)/.test(t))
+  // ─── 7. موسوعات ───
+  if (/(موسوعة|قاموس|معجم|أطلس)/.test(t))
     return { class: "encycl", icon: "📚" };
 
-  if (/(ديوان|شعر|شاعر|قصيدة|أدب|أدبي|نثر|مسرح)/.test(t))
+  // ─── 8. أدب وشعر ───
+  if (/(ديوان|شعر|شاعر|قصيدة|أدب|أدبي|نثر|مسرح|بلاغة)/.test(t))
     return { class: "literature", icon: "✒️" };
 
-  if (/(رواية|قصة|قصص|حكاية|حكايات|أسطورة|خيال|مغامرات)/.test(t))
+  // ─── 9. قصص وروايات ───
+  if (/(رواية|قصة|قصص|حكاية|حكايات|أسطورة|خيال|مغامرات|مغامرة)/.test(t))
     return { class: "stories", icon: "📖" };
 
-  if (/(بيئة|طبيعة|حيوان|نبات|بحر|محيط|غابة|طيور)/.test(t))
+  // ─── 10. طبيعة ───
+  if (/(بيئة|طبيعة|حيوان|نبات|بحر|محيط|غابة|طيور|الحدائق|الزراعة)/.test(t))
     return { class: "nature", icon: "🌿" };
 
-  if (/(عربي|العربية|نحو|صرف|بلاغة|قواعد|إعراب|لغة|english|excel|word|access)/.test(t))
+  // ─── 11. لغة عربية ───
+  if (/(عربي|العربية|نحو|صرف|قواعد|إعراب|اللغة العربية|excel|word|access)/.test(t))
     return { class: "language", icon: "🔤" };
 
+  // ─── 12. عام ───
   return { class: "general", icon: "📕" };
 }
 
@@ -130,6 +159,56 @@ async function loadBooks() {
     document.getElementById("errorMsg").textContent =
       `تعذّر الاتصال: ${err.message}. تأكد من API_URL والنشر بصلاحية "الجميع"`;
   }
+}
+
+// ─── البحث العام من الصفحة الرئيسية ───
+function globalSearchHandler() {
+  const q = document.getElementById("globalSearch").value.trim();
+
+  // إظهار/إخفاء زر المسح
+  document.getElementById("globalClearBtn").style.display = q ? "flex" : "none";
+
+  if (!q) {
+    // إذا فُرغ البحث، ارجع لعرض التصنيفات
+    if (currentCategory === "_search") {
+      currentCategory = null;
+      document.getElementById("searchToolbar").style.display = "none";
+      document.getElementById("categoryHeader").classList.add("hidden");
+      renderCategories(allBooks);
+    }
+    return;
+  }
+
+  // ضع المستخدم في "وضع البحث" — يبحث في كل الكتب
+  currentCategory = "_search";
+  document.getElementById("searchToolbar").style.display = "flex";
+  document.getElementById("categoryHeader").classList.remove("hidden");
+  document.getElementById("catHeaderIcon").textContent = "🔍";
+  document.getElementById("catHeaderName").textContent = `نتائج البحث: "${q}"`;
+
+  // فلترة الكتب
+  const filtered = applyFilter(allBooks, q.toLowerCase(), "");
+  document.getElementById("catHeaderCount").textContent = `${filtered.length} نتيجة`;
+
+  // عرض النتائج
+  document.getElementById("searchInput").value = q; // مزامنة البحث الداخلي
+  const grid = document.getElementById("booksGrid");
+  if (!filtered.length) {
+    showStudentState("noResults");
+  } else {
+    showStudentState("grid");
+    grid.innerHTML = filtered.map((b, i) => studentCard(b, i)).join("");
+  }
+}
+
+function clearGlobalSearch() {
+  document.getElementById("globalSearch").value = "";
+  document.getElementById("globalClearBtn").style.display = "none";
+  currentCategory = null;
+  document.getElementById("searchToolbar").style.display = "none";
+  document.getElementById("categoryHeader").classList.add("hidden");
+  renderCategories(allBooks);
+  document.getElementById("globalSearch").focus();
 }
 
 // ════════════════════════════════════════════════════
@@ -205,6 +284,9 @@ function backToCategories() {
   currentCategory = null;
   document.getElementById("searchToolbar").style.display = "none";
   document.getElementById("categoryHeader").classList.add("hidden");
+  // مسح البحث العام أيضاً
+  document.getElementById("globalSearch").value = "";
+  document.getElementById("globalClearBtn").style.display = "none";
   renderCategories(allBooks);
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
