@@ -1456,3 +1456,75 @@ input, select, textarea { font-family: var(--font); }
   color: var(--text-soft);
   font-size: 0.92rem;
 }
+
+
+/* ════════════════════════════════════════════════════
+   شريط البحث الرئيسي في Hero
+════════════════════════════════════════════════════ */
+.hero-search {
+  margin: 26px auto 0;
+  max-width: 600px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 6px 6px 6px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 2;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+
+.hero-search-icon {
+  font-size: 1.2rem;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.hero-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: 1rem;
+  padding: 12px 4px;
+  color: var(--text);
+  background: transparent;
+  direction: rtl;
+}
+
+.hero-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.hero-search-clear {
+  display: none;
+  background: var(--bg);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.hero-search-clear:hover {
+  background: var(--red-light);
+  color: var(--red);
+}
+
+/* ════════════════════════════════════════════════════
+   ألوان أغلفة جديدة (أطفال + إنجليزي)
+════════════════════════════════════════════════════ */
+.cat-banner.children   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.cat-banner.english    { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
+
+.book-cover.children   { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.book-cover.english    { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
+
+.detail-cover.children { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.detail-cover.english  { background: linear-gradient(135deg, #1d4ed8, #1e3a8a); }
