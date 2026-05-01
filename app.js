@@ -12,6 +12,21 @@ let isAdmin          = false;
 let pendingDeleteRow = null;
 let editingRow       = null;
 let parsedFileBooks  = [];
+let currentCategory  = null; // التصنيف المعروض حالياً (null = صفحة التصنيفات)
+
+// ─── قائمة التصنيفات الرئيسية ───
+const CATEGORIES = [
+  { key: "religious",  name: "ديني وإسلامي",  icon: "🕌" },
+  { key: "palestine",  name: "فلسطين والقضية", icon: "🇵🇸" },
+  { key: "history",    name: "تاريخ وحضارة",   icon: "🏛️" },
+  { key: "science",    name: "علوم ومعارف",    icon: "🔬" },
+  { key: "literature", name: "أدب وشعر",      icon: "✒️" },
+  { key: "stories",    name: "قصص وروايات",    icon: "📖" },
+  { key: "encycl",     name: "موسوعات ومراجع", icon: "📚" },
+  { key: "language",   name: "لغات وقواعد",    icon: "🔤" },
+  { key: "nature",     name: "طبيعة وبيئة",   icon: "🌿" },
+  { key: "general",    name: "متنوعات",       icon: "📕" }
+];
 
 // ─── تحديد لون الغلاف وأيقونته بناءً على الموضوع ───
 function getCoverInfo(book) {
@@ -120,12 +135,89 @@ async function loadBooks() {
 // ════════════════════════════════════════════════════
 // واجهة الطالب
 // ════════════════════════════════════════════════════
+
+// عرض التصنيفات (الصفحة الرئيسية)
 function renderStudentBooks(books) {
+  if (currentCategory === null) {
+    renderCategories(books);
+  } else {
+    renderCategoryBooks(books);
+  }
+}
+
+// عرض شبكة التصنيفات
+function renderCategories(books) {
+  showStudentState("categories");
+
+  // حساب عدد الكتب في كل تصنيف
+  const counts = {};
+  CATEGORIES.forEach(c => counts[c.key] = 0);
+  books.forEach(b => {
+    const info = getCoverInfo(b);
+    if (counts[info.class] !== undefined) counts[info.class]++;
+  });
+
+  // إنشاء بطاقات التصنيفات (فقط التي تحتوي كتب)
+  const visibleCats = CATEGORIES.filter(c => counts[c.key] > 0);
+
+  document.getElementById("categoriesGrid").innerHTML = visibleCats.map((cat, i) => {
+    const delay = Math.min(i * 0.05, 0.5);
+    return `
+      <div class="category-card" style="animation-delay:${delay}s" onclick="openCategory('${cat.key}')">
+        <div class="cat-banner ${cat.key}">
+          <span class="cat-icon">${cat.icon}</span>
+        </div>
+        <div class="cat-body">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-count">📚 ${counts[cat.key]} كتاب</div>
+          <div class="cat-arrow">تصفح التصنيف ←</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+// فتح تصنيف معين
+function openCategory(key) {
+  currentCategory = key;
+  // إظهار شريط البحث وعنوان التصنيف
+  document.getElementById("searchToolbar").style.display = "flex";
+  document.getElementById("categoryHeader").classList.remove("hidden");
+
+  // تحديث عنوان التصنيف
+  const cat = CATEGORIES.find(c => c.key === key);
+  document.getElementById("catHeaderIcon").textContent = cat.icon;
+  document.getElementById("catHeaderName").textContent = cat.name;
+  const count = allBooks.filter(b => getCoverInfo(b).class === key).length;
+  document.getElementById("catHeaderCount").textContent = `${count} كتاب`;
+
+  // مسح البحث وعرض الكتب
+  document.getElementById("searchInput").value = "";
+  document.getElementById("statusFilter").value = "";
+  filterBooks();
+
+  // تمرير للأعلى
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// العودة لصفحة التصنيفات
+function backToCategories() {
+  currentCategory = null;
+  document.getElementById("searchToolbar").style.display = "none";
+  document.getElementById("categoryHeader").classList.add("hidden");
+  renderCategories(allBooks);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// عرض كتب التصنيف الحالي
+function renderCategoryBooks(books) {
+  // فلترة حسب التصنيف الحالي
+  const categoryBooks = books.filter(b => getCoverInfo(b).class === currentCategory);
+
   const grid = document.getElementById("booksGrid");
-  if (!books.length) { showStudentState("noResults"); return; }
+  if (!categoryBooks.length) { showStudentState("noResults"); return; }
   showStudentState("grid");
-  // الترقيم بترتيب الإضافة (بطء بسيط لكل بطاقة)
-  grid.innerHTML = books.map((b, i) => studentCard(b, i)).join("");
+  grid.innerHTML = categoryBooks.map((b, i) => studentCard(b, i)).join("");
 }
 
 function studentCard(book, idx) {
@@ -158,7 +250,9 @@ function studentCard(book, idx) {
 function filterBooks() {
   const q  = document.getElementById("searchInput").value.trim().toLowerCase();
   const st = document.getElementById("statusFilter").value;
-  renderStudentBooks(applyFilter(allBooks, q, st));
+  // فلترة فقط داخل التصنيف الحالي
+  const filtered = applyFilter(allBooks, q, st);
+  renderCategoryBooks(filtered);
 }
 
 function updateStudentStats(books) {
@@ -168,9 +262,15 @@ function updateStudentStats(books) {
 }
 
 function showStudentState(state) {
-  ["loadingState","errorState","booksGrid","noResults"].forEach(id =>
+  ["loadingState","errorState","categoriesGrid","booksGrid","noResults"].forEach(id =>
     document.getElementById(id).classList.add("hidden"));
-  const map = { loading: "loadingState", error: "errorState", grid: "booksGrid", noResults: "noResults" };
+  const map = {
+    loading:    "loadingState",
+    error:      "errorState",
+    categories: "categoriesGrid",
+    grid:       "booksGrid",
+    noResults:  "noResults"
+  };
   document.getElementById(map[state]).classList.remove("hidden");
 }
 
