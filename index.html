@@ -73,10 +73,12 @@
       </div>
     </div>
 
-    <div class="toolbar">
+    <!-- شريط البحث (يظهر فقط داخل التصنيف) -->
+    <div class="toolbar" id="searchToolbar" style="display:none">
+      <button class="btn btn-ghost" onclick="backToCategories()">← العودة للتصنيفات</button>
       <div class="search-input">
         <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="ابحث باسم الكتاب أو المؤلف أو رقم التصنيف..." oninput="filterBooks()">
+        <input type="text" id="searchInput" placeholder="ابحث في هذا التصنيف..." oninput="filterBooks()">
       </div>
       <select id="statusFilter" onchange="filterBooks()">
         <option value="">📊 كل الحالات</option>
@@ -85,6 +87,16 @@
       </select>
     </div>
 
+    <!-- عنوان التصنيف الحالي (يظهر فقط داخل التصنيف) -->
+    <div class="category-header hidden" id="categoryHeader">
+      <span class="cat-header-icon" id="catHeaderIcon">📚</span>
+      <div class="cat-header-text">
+        <h2 id="catHeaderName">التصنيف</h2>
+        <p id="catHeaderCount">0 كتاب</p>
+      </div>
+    </div>
+
+    <!-- حالات التحميل -->
     <div id="loadingState" class="state">
       <div class="spinner"></div>
       <div class="state-text">جارٍ تحميل الجرد...</div>
@@ -94,7 +106,13 @@
       <div class="state-text" id="errorMsg">تعذّر الاتصال بالخادم</div>
       <button class="btn btn-primary" onclick="loadBooks()">🔄 إعادة المحاولة</button>
     </div>
+
+    <!-- شبكة التصنيفات (الصفحة الرئيسية) -->
+    <div id="categoriesGrid" class="categories-grid hidden"></div>
+
+    <!-- شبكة الكتب (داخل تصنيف) -->
     <div id="booksGrid" class="books-grid hidden"></div>
+
     <div id="noResults" class="state hidden">
       <span class="state-icon">📭</span>
       <div class="state-text">لا توجد كتب تطابق بحثك</div>
