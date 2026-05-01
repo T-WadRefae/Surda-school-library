@@ -294,19 +294,38 @@ function generateSummariesBatch(startRow, batchSize, force) {
 
 // توليد كل النبذات الفارغة (للكتب القليلة)
 function generateMissingSummaries() {
-  return generateSummariesBatch(2, 20);
+  const result = generateSummariesBatch(2, 20);
 
-  
+  // إذا لسا في كتب
   if (!result.done) {
-    ScriptApp.newTrigger("generateMissingSummaries")
+    ScriptApp.newTrigger("continueGenerating")
       .timeBased()
-      .after(5000) // بعد 5 ثواني
+      .after(3000) // بعد 3 ثواني
       .create();
   }
 
   return result;
 }
+function continueGenerating() {
+  const props = PropertiesService.getScriptProperties();
 
+  let startRow = parseInt(props.getProperty("NEXT_ROW") || "2");
+
+  const result = generateSummariesBatch(startRow, 20);
+
+  if (!result.done) {
+    props.setProperty("NEXT_ROW", result.nextRow);
+
+    ScriptApp.newTrigger("continueGenerating")
+      .timeBased()
+      .after(3000)
+      .create();
+  } else {
+    props.deleteProperty("NEXT_ROW");
+  }
+
+  return result;
+}
 // ─── الدالة الأساسية لتوليد نبذة بـ AI ───
 function generateAISummary(title, author, part) {
   if (!title) return "";
