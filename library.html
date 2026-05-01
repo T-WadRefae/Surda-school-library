@@ -1825,21 +1825,40 @@ input, select, textarea { font-family: var(--font); }
       </div>
     </div>
 
-    <!-- ── توليد نبذات للكتب الموجودة ── -->
+    <!-- ── توليد نبذات بـ AI الحقيقي ── -->
     <div id="tab-ai" class="tab-panel">
       <div class="panel">
-        <h2>🤖 توليد نبذات للكتب الموجودة</h2>
-        <p class="panel-desc">سيتم توليد نبذة تعريفية ذكية لكل كتاب لا يحتوي على نبذة بعد</p>
+        <h2>🤖 توليد نبذات بالذكاء الاصطناعي</h2>
+        <p class="panel-desc">يُستخدم ChatGPT (OpenAI) لإنتاج نبذات حقيقية ومفصّلة لكل كتاب</p>
 
-        <div class="hint">
-          ℹ️ الأداة ستفحص جميع الـ <strong id="totalBooksHint">0</strong> كتاب في الجرد، وتولّد نبذة فقط للكتب التي ليس لها نبذة. الكتب التي لها نبذات لن تتأثر.
-          <br><br>
-          ⏱️ قد يستغرق العمل دقيقة إلى دقيقتين.
+        <div class="hint" style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#d97706">
+          <strong>⚠️ قبل الاستخدام:</strong> يجب إضافة <code>OPENAI_API_KEY</code> في خصائص السكريبت.<br><br>
+          <strong>الخطوات:</strong>
+          <ol style="margin:8px 16px 0;line-height:1.9">
+            <li>افتحي Apps Script</li>
+            <li>اضغطي على ⚙️ <strong>إعدادات المشروع</strong></li>
+            <li>انزلي لـ <strong>خصائص السكريبت</strong></li>
+            <li>اضغطي <strong>إضافة خاصية</strong></li>
+            <li>الاسم: <code>OPENAI_API_KEY</code></li>
+            <li>القيمة: مفتاحك من platform.openai.com/api-keys</li>
+            <li>احفظي وأعيدي نشر السكريبت</li>
+          </ol>
         </div>
 
-        <button class="btn btn-accent btn-block" onclick="generateAllSummaries()" id="genBtn">
-          🤖 ابدأ توليد النبذات للكتب الفارغة
-        </button>
+        <div style="display:flex;gap:10px;margin-bottom:14px">
+          <button class="btn btn-ghost btn-flex" onclick="testAI()" id="testAIBtn">
+            🧪 اختبار AI أولاً
+          </button>
+          <button class="btn btn-accent btn-flex" onclick="generateAllSummaries()" id="genBtn">
+            🤖 ابدأ توليد النبذات بـ AI
+          </button>
+        </div>
+
+        <div class="hint">
+          ℹ️ سيُولِّد النظام نبذة لكل كتاب لا يحتوي على نبذة. الكتب التي لها نبذات لن تتأثر.<br>
+          ⏱️ لـ 980 كتاب: <strong>~10-15 دقيقة</strong> | 💵 التكلفة التقريبية: <strong>$0.50 - $1</strong>
+        </div>
+
         <div id="genMsg" class="msg hidden"></div>
       </div>
     </div>
@@ -2364,22 +2383,84 @@ async function addBook() {
   }
 }
 
-// ─── توليد نبذات ───
+// ─── توليد نبذات بـ AI الحقيقي (على دفعات) ───
 async function generateAllSummaries() {
   const btn = document.getElementById("genBtn");
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0;display:inline-block;vertical-align:middle"></div> جارٍ التوليد...';
-  showMsg("genMsg", "⏳ جارٍ توليد النبذات... قد يستغرق دقيقة إلى دقيقتين", "success");
+
+  let totalProcessed = 0;
+  let totalSkipped = 0;
+  let nextRow = 2;
+  const BATCH_SIZE = 20; // 20 كتاب لكل دفعة
+
+  showMsg("genMsg", "🤖 جارٍ الاتصال بـ AI...", "success");
+
   try {
-    const res = await apiPost({ action: "generateSummaries", password: ADMIN_PASS });
-    if (res.error) throw new Error(res.error);
-    showMsg("genMsg", "✅ " + res.message, "success");
+    let safety = 0; // حماية من loop لانهائي
+    while (safety < 100) {
+      safety++;
+
+      // تحديث الواجهة
+      showMsg("genMsg",
+        `🤖 جارٍ التوليد... تمت معالجة ${totalProcessed} كتاب حتى الآن (دفعة ${safety})`,
+        "success");
+
+      const res = await apiPost({
+        action: "generateSummariesBatch",
+        password: ADMIN_PASS,
+        startRow: nextRow,
+        batchSize: BATCH_SIZE
+      });
+
+      if (res.error) throw new Error(res.error);
+
+      totalProcessed += res.processed || 0;
+      totalSkipped   += res.skipped || 0;
+
+      if (res.done || !res.nextRow) {
+        showMsg("genMsg",
+          `✅ تم! تمت معالجة ${totalProcessed} كتاب (تخطي ${totalSkipped} كتاب لها نبذات)`,
+          "success");
+        break;
+      }
+      nextRow = res.nextRow;
+
+      // فاصل صغير بين الدفعات
+      await new Promise(r => setTimeout(r, 500));
+    }
+
     await loadBooks();
   } catch (e) {
-    showMsg("genMsg", "❌ " + e.message, "error");
+    showMsg("genMsg",
+      `❌ ${e.message}<br><br>تم توليد ${totalProcessed} كتاب قبل التوقف. يمكنك إعادة الضغط لإكمال الباقي.`,
+      "error");
   } finally {
     btn.disabled = false;
-    btn.innerHTML = '🤖 ابدأ توليد النبذات للكتب الفارغة';
+    btn.innerHTML = '🤖 ابدأ توليد النبذات بـ AI';
+  }
+}
+
+// ─── اختبار سريع لـ AI ───
+async function testAI() {
+  const btn = document.getElementById("testAIBtn");
+  if (btn) { btn.disabled = true; btn.textContent = "جارٍ الاختبار..."; }
+  try {
+    const res = await fetch(`${API_URL}?action=testAI`);
+    const data = await res.json();
+    if (data.success) {
+      showMsg("genMsg",
+        `✅ AI يعمل! المزود: ${data.provider}<br><br>📝 نبذة تجريبية:<br>"${data.sample}"`,
+        "success");
+    } else {
+      showMsg("genMsg",
+        `❌ ${data.error || "فشل الاختبار"}<br><br>💡 ${data.hint || "تأكدي من إعدادات API key"}`,
+        "error");
+    }
+  } catch (e) {
+    showMsg("genMsg", `❌ ${e.message}`, "error");
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = "🧪 اختبار AI أولاً"; }
   }
 }
 
