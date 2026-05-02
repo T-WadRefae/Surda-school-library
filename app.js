@@ -3,7 +3,7 @@
 // تصميم: T. Wad Refae
 // ════════════════════════════════════════════════════
 
-const API_URL    = "https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec";
+const API_URL    = "https://script.google.com/macros/s/AKfycbyOVdJ0XWfTG8cpuWjaOVwVKXJ6IxpTxRBnStrVGDC-lqWi0iWQoFsDWYRtJuXv4nECVQ/exec";
 const ADMIN_PASS = "Surda123surda";
 
 let allBooks         = [];
